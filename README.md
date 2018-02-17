@@ -139,9 +139,88 @@ Let’s look at the file we just downloaded. Since this is a pretty big file, we
 
     head -n 50 "city.list.json"
 
-Since this is a `JSON` file, we might want to use `jq“ command to display it in a nice way. Let’s try it:
+Since this is a `JSON` file, we might want to use `jq` command to display it in a nice way. Let’s try it:
 
     head -n 50 "city.list.json" | jq
+    
+That didn’t work! That’s because `JSON` is a hierarchical format, and by using the `head` command, we destroyed its hiercharchy. However, if we were to use `jq` on the whole file, things would work normally. Now since `city.list.json` is a pretty big file, this will take a couple of seconds. We can calculate how long it will take by adding `time` before the command you want to measure:
+
+    time jq '.' "city.list.json"
+    
+That took just a little bit more than 29 seconds on my machine! But it worked as expected. Now that we have a list of all the cities and their respective IDs, we need to find Paris, Ontario. We have a couple of ways to do this. Let’s have a look at our `JSON` file. Right above the city name is its ID, and right below the city name is its country. This means that we could use `grep` to search for the city we’re looking for, use the `-B1` option to tell `grep` to print one extra line before each match, and the `-A1` to print one extra line after our match:
+
+    grep -B1 -A1 "Paris" "city.list.json"
+    
+That worked out okay. We can be even more specific by filtering our output file. Let’s see how many cities in Canada are named "Paris." We’ll use `grep` to search for the line `"country": "CA"` and specify that, this time, we want to print two extra lines before our match:
+
+    grep -A1 -B1 "Paris" "city.list.json" | grep -B2 '"country": "CA"'
+    
+So we found the ID we we’re looking for using `grep`. Alternatively, `jq` has a built-in search function:
+
+    jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i"))' "city.list.json"
+    
+Let’s breakdown our last query. We asked `jq` to open the array using `[]`, search within `.name` for the case-insensitive (`"i"`) string `"paris"`, then within those results, search within `.country` for a case-insensitive string matching `"CA"`, the country code for Canada. Since we’re really interested in the city ID, let’s be even more specific:
+
+    jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i")) | .id' "city.list.json"
+    
+Awesome. We can now copy and paste this ID somewhere. But wouldn’t it be better to assign it to a variable? In `BASH`, you can assign the outcome of a command to a variable using the following method:
+
+    city_id=$(jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i")) | .id' "city.list.json")
+    
+If you’ve been following closely, you might wonder why we hard coded the string `"paris"` in the previous query, instead of using the shell variable `$city`. The answer is that shell variables cannot be used as is in a `jq` command. However, we can reassign a shell variables to `jq` variables. In the following command, we are using the `--arg` option to reassign the shell variable `$city` to the `jq` variable `$CITY`:
+
+    city_id=$(jq --arg CITY "$city" '.[] | select(.name | match($CITY;"i")) | select(.country | match("CA";"i")) | .id' "city.list.json")
+
+Let’s make sure it worked by using `echo` to print the value of `$city_id` to our terminal:
+
+    echo $city_id
+    
+Great! We can now use our variable `$city_id` within our API query. Since Canada uses the metric system, let’s also change the system were a using:
+
+    curl -s "https://api.openweathermap.org/data/2.5/weather?id=$city_id&units=metric&APPID=$my_id" | jq
+    
+Now, let’s imagine that we are employees working for the city of Paris, Ontario, and that we want to write a small weather command that displays a one-sentence summary of the weather. Something that we could automatically tweet every morning for example. For example, it could be something like this:
+
+_The weather is currently -3.67C in Paris, Ontario. Overcast clouds. Temperatures are expected to climb up to -3C._
+
+To do this, we’ll need to retrieve three bits of information: `.temp`; `.temp_max`; .`description`. Notice how for `.description`, we’re removing the " " from the string using `sed`, and calling `python` to capitalize the string:
+
+    current_temp=$(curl -s "https://api.openweathermap.org/data/2.5/weather?id=$city_id &units=metric&APPID=$my_id" | jq '.main.temp')
+    temp_max=$(curl -s "https://api.openweathermap.org/data/2.5/weather?id=$city_id&units=metric&APPID= $my_id" | jq '.main.temp_max')
+    description=$(curl -s "https://api.openweathermap.org/data/2.5/weather?id=$city_id &units=metric&APPID=$my_id" | jq '.weather[].description' | sed 's/"//g' | python -c "print raw_input().capitalize()")
+    echo "The weather is currently "$current_temp"C in Paris, Ontario. "$description ". Temperatures are expected to climb up to "$temp_max"C."
+
+Since Canada is a bilingual country, it would be nice if we could translate our last ouptut to French. Fortunately, the `trans` command from the `translate-shell` package uses the Google Translate API (and others) to do just that. We can install it using `brew`:
+
+    brew install translate-shell
+    
+We can see if it worked:
+
+    which -a trans
+    
+If you have the `humdrum toolkit`installed on your computer, you already have another command called `trans`. That will be problematic. We can overcome this problem by renaming our newly installed `trans` command to `translate` using an `alias`:
+
+    alias translate=/usr/local/bin/trans
+    
+This worked as a temporarily solution, but won’t work after we close our terminal. To make it
+permanent, we can add the `alias` to our `bash_profile`:
+
+    echo "alias translate=/usr/local/bin/trans" >> ~/.bash_profile
+    source ~/.bash_profile
+    
+__Note: Since `man`is an independent program, we can’t do `man translate`, but `translate -h`will work.__
+
+We can test our newly renamed command. We’ll used the `-to` option to specify the target language and `-b` to enable brief mode:
+
+    translate -to "French" -b 'Hello'
+    
+It works! We can now translate our weather tweet to French:
+
+    echo "The weather is currently "$current_temp"C in Paris, Ontario. "$description". Temperatures are expected to climb up to "$temp_max"C." | translate -to "French" -b
+    
+__Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
+
+
 
 
 
