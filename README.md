@@ -220,6 +220,39 @@ It works! We can now translate our weather tweet to French:
     
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
+### Using the Spotify API
+
+So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
+
+__Note: Spotify has a Interactive API Web Console that allows you to use their API without having to code (but what’s the fun in that?). You can find more about it at: https://developer.spotify.com/web-api/console/__
+
+To use the Spotify API, you’ll first need to register on https://developer.spotify.com/. Use your regular Spotify username and password to create your developer app. The app can be called anything. You will be granted a Spotify developer client ID and client secret.
+
+Our next step is to use our new credentials to get a temporary access token. An important coding skill is to be able to look online for existing bits of code. For example, let’s see if we can find an existing script that will allow us to get a Spotify access token. Let’s Google: "get spotify api access token script". One of the first results was this link: https://gist.github.com/ahallora/4aac6d048742d5de0e65, which had the following script:
+
+`<?php
+
+$client_id = '<insert your spotify app client id>'; 
+$client_secret = '<insert your spotify app client secret>'; 
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,            'https://accounts.spotify.com/api/token' );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     'grant_type=client_credentials' ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($client_id.':'.$client_secret))); 
+
+$result=curl_exec($ch);
+echo $result;
+
+?>
+```
+
+
+
+
+
+
 
 
 
