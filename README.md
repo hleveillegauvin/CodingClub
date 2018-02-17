@@ -230,7 +230,8 @@ To use the Spotify API, you’ll first need to register on https://developer.spo
 
 Our next step is to use our new credentials to get a temporary access token. An important coding skill is to be able to look online for existing bits of code. For example, let’s see if we can find an existing script that will allow us to get a Spotify access token. Let’s Google: "get spotify api access token script". One of the first results was this link: https://gist.github.com/ahallora/4aac6d048742d5de0e65, which had the following script:
 
-`<?php
+```
+<?php
 
 $client_id = '<insert your spotify app client id>'; 
 $client_secret = '<insert your spotify app client secret>'; 
