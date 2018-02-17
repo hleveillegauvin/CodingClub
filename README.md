@@ -69,7 +69,31 @@ Better. Notice how were are using pipes within `jq`. We know we’re still in `j
     curl -s "http://api.open-notify.org/astros.json" | jq '.people[] | [.name, .craft] | @csv'
     
 This worked, but it’s pretty messy. This is because mintinlinebashjq is adding extra " " to make sure things are separated properly. But since our original data was already enclosed in " ", we don’t really need `jq` to do this. We can specify that we want the output to be "raw" using the `-r` option:
+
+    curl -s "http://api.open-notify.org/astros.json" | jq -r '.people[] | [.name, .craft] | @csv'
     
+We can make our output even nicer by adding a header:
+
+    curl -s "http://api.open-notify.org/astros.json" | jq -r '["NAME", "CRAFT"], (.people[] | [.name, .craft]) | @csv'
+    
+We did it! Since this is `UNIX`, we can redirect our output to a `CSV` file if we want to:
+
+    curl -s "http://api.open-notify.org/astros.json" | jq -r '["NAME", "CRAFT"], (.people[] | [.name, .craft]) | @csv' > whosinspace.csv
+    
+The `CSV` file we just created can be used with other softwares, like `R` for example. But sometimes we just want to look at the data in the terminal. `csvkit` is a useful toolkit that allows you to view and manipulate `CSV` file directly in the terminal. If you have `brew` on your machine, you can install `csvkit` easily:
+
+    brew install csvkit
+    
+One of the useful tool that is included in the `csvkit` is `csvlook`, which displays `CSV` files in a nice
+table:
+
+    curl -s "http://api.open-notify.org/astros.json" | jq -r '["NAME", "CRAFT"], (.people[] | [.name, .craft]) | @csv' | csvlook
+    
+Of course, `csvlook` can also open local files:
+
+    csvlook whosinspace.csv
+    
+### Who’s in Space?
 
 
   
