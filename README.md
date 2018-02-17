@@ -96,6 +96,56 @@ Of course, `csvlook` can also open local files:
 ### Grabbing the Weather
 
 
+The first API we used was pretty simple. It did not require any ID nor offered options. It really only did one thing: return information about who’s in space. But most of the time, APIs will be more sophisticated. In this exercise, we’ll be using the OpenWeatherMap API to fetch information about the weather. First, we’ll need to sign up for an API key at: http://openweathermap.org/appid.
+
+After signing-up online, you’ll receive your API key by email. Since everyone’s API key is different, let’s assign our API key to a variable:
+
+    my_id=6ff3595d244317ecf2a4a17976e7XXXX
+    
+__Note: You’ll need to replace 6ff3595d244317ecf2a4a17976e7XXXX with your own ID.__
+
+We can now print our key anytime we need it:
+
+    echo $my_id
+    
+__Note: This variable will be available as long as your session is running. If you close your terminal, your variable will disappear.__
+
+We’re ready to use make our first request. Let’s start by looking for the current weather in Columbus, OH:
+
+    curl -s "https://api.openweathermap.org/data/2.5/weather?q=columbus&APPID=$my_id" | jq
+    
+That’s a lot of information! Let’s see... There is something called .main.temp, but the value associated with it seems very high. Let’s look at the API documentation online: http://openweathermap.org/current. Ah! Let’s change the default unit to Fahrenheit. We can do this by modifying the API endpoint (i.e. then end of our url) to specify our preferred unit:
+
+    curl -s "https://api.openweathermap.org/data/2.5/weather?q=columbus&units=imperial&APPID=$my_id" | jq
+    
+Just like we created a variable to store our ID, we can create a variable called `$city` to store the name of the city we’re interested in:
+
+    city="columbus"
+    curl -s "https://api.openweathermap.org/data/2.5/weather?q=$city&units=imperial&APPID=$my_id" | jq
+    
+Now, imagine we’re interested in finding out what the weather is like in Paris, we can simply update our variable `$city` and keep the same query:
+
+    city="paris"
+    curl -s "https://api.openweathermap.org/data/2.5/weather?q=$city&units=imperial&APPID=$my_id" | jq
+    
+We now know what the weather is like in Paris, France. But what if we were interested in knowing the weather in Paris, Ontario, "the Prettiest Little Town in Canada"? According to the online documentation, cities can be specified by city names (as we did previously), but also using either ISO 3166 country codes, city ID, geographic coordinates, or ZIP codes. Let’s use city ID. Open Weather Map has a `JSON` file with all the cities available and their unique ID. You can download that file from the following url: http://bulk.openweathermap.org/sample/city.list.json.gz. We can also use `curl` to download the file, and `gunzip` to extract it:
+
+    curl -L "http://bulk.openweathermap.org/sample/city.list.json.gz" > "city.list.json.gz"
+    gunzip -kv "city.list.json.gz"
+    
+__Note: curl can be pretty slow.__
+
+Let’s look at the file we just downloaded. Since this is a pretty big file, we’ll use the `head` command to only display the first 50 lines:
+
+    head -n 50 "city.list.json"
+
+Since this is a `JSON` file, we might want to use `jq“ command to display it in a nice way. Let’s try it:
+
+    head -n 50 "city.list.json" | jq
+
+
+
+
 
 
   
