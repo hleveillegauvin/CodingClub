@@ -93,7 +93,9 @@ Of course, `csvlook` can also open local files:
 
     csvlook whosinspace.csv
     
-### Who’s in Space?
+### Grabbing the Weather
+
+
 
 
   
