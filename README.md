@@ -248,6 +248,213 @@ echo $result;
 
 ?>
 ```
+__Note: if you're on OS X, `PHP` is pre-installed on your computer. If you're running Ubuntu (or comething similar), you might have to install it manually.__
+
+We are going to use this existing script to get an access token. First, we’ll modify the script by adding our client id and secret:
+
+
+```
+<?php
+
+$client_id = '5cf8945daa8d4d2ca7862aef2bc4XXXX'; 
+$client_secret = '69dae24b3fe44a6990171e5d7e78XXXX'; 
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,            'https://accounts.spotify.com/api/token' );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     'grant_type=client_credentials' ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($client_id.':'.$client_secret))); 
+
+$result=curl_exec($ch);
+echo $result;
+
+?>
+```
+
+Second, we’ll add a `PHP she-bang line at the very beginning of our script to tell our shell that this is written in `PHP`:
+
+```
+#!/usr/bin/php
+<?php
+
+$client_id = '5cf8945daa8d4d2ca7862aef2bc4XXXX'; 
+$client_secret = '69dae24b3fe44a6990171e5d7e78XXXX'; 
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,            'https://accounts.spotify.com/api/token' );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     'grant_type=client_credentials' ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($client_id.':'.$client_secret))); 
+
+$result=curl_exec($ch);
+echo $result;
+
+?>
+```
+
+We’ll save this file as `spotifyToken.php`. Finally, our last step is to change the permissions associated with this script to make it executable:
+
+    chmod +x spotifyToken.php
+    
+Let’s see what the script does:
+
+    ./spotifyToken.php
+    
+By now, you should recognize that the data we received is in the `JSON` format. Let’s use `jq` to make
+it look pretty:
+
+    ./spotifyToken.php | jq .
+    
+This tells us what our token is ("BQCU3...IMXXXX"), its type ("Bearer"), and when it expires (in 3600 seconds, i.e. 1 hour). Since the token is so long, it might be useful to assign it to a variable. We’ll use `jq` to print the value associated with `.access_token` and then `sed` to remove the " ":
+
+    token=$(./spotifyToken.php | jq '.access_token' | sed 's/"//g')
+    
+__Note: This token will expire in 1 hour. If it expires, simply re-run the command above to get a new access token.__
+
+Let’s see if it worked:
+
+    echo $token
+    
+Now that we have a valid token, we can make our first query. Spotify’s API documentation is very detailed and can be found here: https://developer.spotify.com/web-api/endpoint-reference/ (and information about audio analysis can be found here: https://web.archive.org/web/20160528174915/http://developer.echonest.com/docs/v4/_static/AnalyzeDocumentation.pdf). In addition to our access token, each query will need 1) an access method, 2) an endpoint, and 3) a Spotify ID, (e.g. a track ID, album ID, and artist ID, etc).
+
+1. The method of authentication is indicated on the Spotify website. For researchers, we will almost exclusively use `GET`. `GET` is also the default method used by `curl`, so we won’t have to worry about this too much.
+
+2. Endpoints are used to indicate what type of information you want to retrieve. Simply copy the endpoint from the website and paste appropriately in the URL. For example: `/v1/albums/{id}/tracks`
+
+__Note: All endpoints should begin with a forward slash (/). On the Spotify website, the forward slash for "Audio Analysis for a Track" endpoint is missing. You will need to manually add the forward slash at the beginning of this endpoint to access this information.__
+
+3. Spotify IDs can be found though the Spotify app. Simply select the track, album, or artist, click share, and select URI to copy the ID.
+
+__Note: By default, if you copy a Spotify ID from the app, it will come in this format: spotify:track:4BRkPBUxOYffM2QXVlq7aC. To use this ID with the Spotify API, you will need to trim the beginning part and only keep 4BRkPBUxOYffM2QXVlq7aC. We can do this using the following sed command: `echo "spotify:track:4BRkPBUxOYffM2QXVlq7aC" | sed 's/.*://g'.`__
+
+__Note: Some endpoints require two types of IDs. For example, to get access to a user’s specific playlist, one would need `user_id` and `playlist_id`.__
+
+Okay, let’s try to have a list of all the songs on the Beatles’ album "Revolver" (Spotify ID: 3PRoXYsngSwjEQWR5PsHWR):
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR" -H "Authorization: Bearer $token " | jq .
+    
+By skimming this file, it looks like the information we’re looking for is under .`tracks`, then `.items[]`, then `.name`. Since `.item[]` is an array, we’ll need to use `[]` (square brackets) in our query:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq '.tracks.items[].name'
+
+Sometimes, it can be hard to get around `JSON` files, especially if they are very long. The following command (which I found on an online forum), although very long and convoluted, can be really useful to get a big picture of how one file is organized:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq '[
+    path(..)
+    | map(
+    if type == "number" then
+    "[]"
+    else
+    tostring
+    end
+    )
+    | join(".")
+    | split(".[]")
+    | join("[]")
+    ]
+    | unique
+    | map("." + .)
+    | .[]'
+    
+Let’s make this into an `alias` and add it to our `.bash\_profile` so we never have to type this monstrosity ever again. Open `~/.bash_profile` with your favourite text editor (I’ll use TextEdit in this example):
+
+    open -a TextEdit ~/.bash_profile
+    
+Copy and paste the following command as the last line of you `~/.bash_profile`, then save and quit:
+
+    alias jq_overview='jq '"'"'[path(..) | map(if type == "number" then "[]" else tostring end)
+    | join(".") | split(".[]") | join("[]")] | unique | map("." + .) | .[]'"'"''
+    
+Finally run source `~/.bash_profile`:
+
+    source ~/.bash_profile
+    
+Ok, so we managed to find print a list of all the song. Let’s make it a little bit more interesting by also retrieving the duration of each song, and make it into a `CSV` file:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[] | [.name, .duration_ms] | @csv'
+    
+Now, imagine we wanted to make our `CSV` file more useful by adding a column for artist (`.tracks.items[].artists.name`) and for album name (`.name`). The `@csv` filter included with `jq` is designed to convert arrays into `CSV`. However, since the value for album name is not part of the `.item` array, we’ll need to think outside the box a little bit. One solution would be to simply hardcode the name of the album in our query. For example:
+
+curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[] | [.artists[].name, "Revolver", .name, .duration_ms] | @csv'
+
+That works ok, but the fact that it’s hard coded makes it harder for us to reuse the code. A better solution would be to assign the value of the album’s name stored under `.name` to a variable, and then call that variable when needed:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.name as $album_name | .tracks.items[] | [.artists[].name, $album_name, .name, .duration_ms] | @csv'
+
+__Note: In the line above, we created a `jq` variable, not a `BASH` variable. This explains why the syntax to create a variable is different than the one we saw previously.__
+
+By default, the `v1/albums/{id}` endpoint will return a maximum of 20 songs. We can push that limit to 50 using the `limit` option:
+
+    curl -s "https://api.spotify.com/v1/albums/3exqrnwvtUAEVCwar8xIcs/tracks?limit=50" -H "Authorization: Bearer $token" | jq '.items[].name'
+    
+Some albums, however, have more than 50 tracks. In order to get around this limitation, we will need to make more than one query. For example, we can get tracks 51-100 using a combination of `limit` and `offset`:
+
+    curl -s "https://api.spotify.com/v1/albums/3exqrnwvtUAEVCwar8xIcs/tracks?offset=50&limit=50" -H "Authorization: Bearer $token" | jq '.items[].name'
+
+Let’s see what else we can do with the Spotify API. One of the endpoint is called "audio analysis" and gives us some information about single songs. Let’s try it out:
+
+    curl -s "https://api.spotify.com/v1/audio-analysis/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq '.'
+    
+Again, since this is a big file, let’s use the `jq_overview` alias we created above to have a quick overview of the file’s organization:
+
+    curl -s "https://api.spotify.com/v1/audio-analysis/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq_overview
+    
+One of the keys is called `.bars[].start`. We can use this to estimate how many measures are in a song. First, let’s start by having a look at the data:
+
+    curl -s "https://api.spotify.com/v1/audio-analysis/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq '.bars[].start'
+    
+This gives us a series of timestamps representing the estimated beginning of each measure. We can count how many measures there are by using the `wc -l` command:
+
+    curl -s "https://api.spotify.com/v1/audio-analysis/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq '.bars[].start' | wc -l
+
+We can also use the Spotify API to retrieve information like the tempo of a song. We will do this using the "audio features" endpoint:
+
+    curl -s "https://api.spotify.com/v1/audio-features/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq '.tempo'
+
+Now imagine we wanted to get the tempo of all the songs on the Beatles’ album "Revolver." The audio features endpoint allows you to retrieve information for many songs at once, as long as your Spotify IDs are comma-separated. First, we’ll use the album endpoint to retrieve the Spotify ID for all the songs on the album:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[].uri'
+    
+Our next step is to clean our IDs to create a nice comma-separated list. First, let’s remove the first part of the ID. We’ll use `sed` to replace any string of character ending with a colon with nothing:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[].uri' | sed 's/.*://g'
+
+Next, we’ll need to convert the newlines (represented by \n) to commas. We’ll use `tr` to do that:
+
+    curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[].uri' |  sed 's/.*://g' | tr "\n" ","
+
+Let’s assign this list of IDs to a variable:
+
+    list_IDs=$(curl -s https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/ -H "Authorization: Bearer $token" | jq -r '.tracks.items[].uri' | sed 's/.*://g' | tr "\n" ",")
+    
+Great. Now we can go back to the audio features endpoint and retrieve the tempo information for all those Spotify IDs:
+
+    curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq '.audio_features[].tempo'
+
+We can do the same thing for mode (where 1 is major and 0 is minor):
+
+    curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq '.audio_features[].mode'
+
+And of course, we can create a `CSV` file that combines both:
+
+    curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq -r '.audio_features[] | [.mode, .tempo] | @csv'
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
