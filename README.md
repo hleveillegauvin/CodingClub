@@ -5,8 +5,16 @@ Cognitive and Systematic Musicology Laboratory, Ohio State University
 Written by Hubert Léveillé Gauvin  
 leveillegauvin.1@osu.edu
 
-## Using APIs
-### Who’s in Space?
+# Table of Contents
+
+* [Using APIs](#using-apis)
+    * [Who's in Space?](#whos-in-space)
+    * [Grabbing the Weather](#grabbing-the-weather)
+    * [Using the Spotify API](#using-the-spotify-api)
+
+
+## <a name="using-apis"></a>Using APIs
+### <a name="whos-in-space"></a>Who's in Space?
 
 To use an API, we’re going to use the `curl` function. In its most basic form, `curl` needs an URL to interact with something. Let’s use `curl` to see who’s in space right now using the following API: http://api.open-notify.org/astros.json.
 
@@ -92,8 +100,8 @@ table:
 Of course, `csvlook` can also open local files:
 
     csvlook whosinspace.csv
-    
-### Grabbing the Weather
+
+### <a name="grabbing-the-weather"></a>Grabbing the Weather
 
 
 The first API we used was pretty simple. It did not require any ID nor offered options. It really only did one thing: return information about who’s in space. But most of the time, APIs will be more sophisticated. In this exercise, we’ll be using the OpenWeatherMap API to fetch information about the weather. First, we’ll need to sign up for an API key at: http://openweathermap.org/appid.
@@ -220,7 +228,7 @@ It works! We can now translate our weather tweet to French:
     
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
-### Using the Spotify API
+### <a name="using-the-spotify-api"></a>Using the Spotify API
 
 So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
 
