@@ -26,6 +26,7 @@ In this section, we'll learn how to write shell scripts through a series of shor
 For all the examples in this section, type or paste the script into the text editor of your choiceand save the file as `[nameofexercise].sh`. Once you have saved the file, type `[nameofexercise].sh` in Terminal to make it executable. Finally, run it with `/[nameofexercise].sh`.
 
 ### <a name="saying-hello"></a>1.1. Saying Hello
+---
 
 In this first exercise, we'll create a program that prompts for your name and prints a greeting using your name. Every shell script must start with a shebang line `#!/bin/sh`. We'll aslo use the `#` character to add comments to our script and document what we are doing. 
 
@@ -46,6 +47,7 @@ echo "Hello, $name, nice to meet you!"
 ```
 
 ### <a name="counting-characters"></a>1.2. Counting Characters
+---
 
 Next, we'll create a program that prompts for an input and returns the number of characters. Again we'll use the `read -p` command to prompt the user for an input, and we'll store the user input under the variable `$input`. We can create a `while loop` to test whether the user actually typed anything; `if` the input is empty, we'll prompt the user again, `else` (i.e. if the string is not empty), we'll count the number of characters. We'll use the `printf` command instead of `echo`, since `echo` hads a arriage return by default, which will add one extra invisible character to our string. We'll then use the `wc`command (word count) to count the number of characters. The standard `wc` output has 3 fields: number of lines, number of words, and number of characters. We can use `awk {'print $3'}` to print the third field (i.e. number of characters). We'll save that number under the variable `$count`. We'll then print a sentence using `echo` that returns the number of characters. Finally, since we created a `while loop` at the beginning of our script, we'll need an `exit` statement to exit the loop.
 
@@ -79,6 +81,7 @@ done
 
 ## <a name="using-apis"></a>2. Using APIs
 ### <a name="whos-in-space"></a>2.1. Who's in Space?
+---
 
 
 To use an API, we’re going to use the `curl` function. In its most basic form, `curl` needs an URL to interact with something. Let’s use `curl` to see who’s in space right now using the following API: http://api.open-notify.org/astros.json.
@@ -167,6 +170,7 @@ Of course, `csvlook` can also open local files:
     csvlook whosinspace.csv
 
 ### <a name="grabbing-the-weather"></a>2.2. Grabbing the Weather
+---
 
 The first API we used was pretty simple. It did not require any ID nor offered options. It really only did one thing: return information about who’s in space. But most of the time, APIs will be more sophisticated. In this exercise, we’ll be using the OpenWeatherMap API to fetch information about the weather. First, we’ll need to sign up for an API key at: http://openweathermap.org/appid.
 
@@ -293,6 +297,7 @@ It works! We can now translate our weather tweet to French:
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
 ### <a name="using-the-spotify-api"></a>2.3. Using the Spotify API
+---
 
 So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
 
@@ -515,6 +520,7 @@ And of course, we can create a `CSV` file that combines both:
   
 ## <a name="using-the-humdrum-toolkit"></a>3. Using the Humdrum Toolkit
 ### <a name="basic-pitch-analysis"></a>3.1. Basic Pitch Analysis
+---
     
 In the following exercises, we will familiarize ourselves with the [Humdrum Toolkit](http://www.humdrum.org/). We will loosely follow the struture of the [Humdrum User Guide](http://www.humdrum.org/guide/). Since our exercises are time-limited, I strongly encourage you to look at the [Humdrum User Guide](http://www.humdrum.org/guide/) and the [Humdrum Reference Manual](http://www.humdrum.org/man/) for more detailed explanations. 
 
