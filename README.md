@@ -15,11 +15,10 @@ leveillegauvin.1@osu.edu
 * [Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
     * [Basic Pitch Analysis](#basic-pitch-analysis)
 
----
+
 ## <a name="using-apis"></a>Using APIs
----
 ### <a name="whos-in-space"></a>Who's in Space?
----
+
 
 To use an API, we’re going to use the `curl` function. In its most basic form, `curl` needs an URL to interact with something. Let’s use `curl` to see who’s in space right now using the following API: http://api.open-notify.org/astros.json.
 
@@ -106,9 +105,7 @@ Of course, `csvlook` can also open local files:
 
     csvlook whosinspace.csv
 
----
 ### <a name="grabbing-the-weather"></a>Grabbing the Weather
----
 
 The first API we used was pretty simple. It did not require any ID nor offered options. It really only did one thing: return information about who’s in space. But most of the time, APIs will be more sophisticated. In this exercise, we’ll be using the OpenWeatherMap API to fetch information about the weather. First, we’ll need to sign up for an API key at: http://openweathermap.org/appid.
 
@@ -234,9 +231,7 @@ It works! We can now translate our weather tweet to French:
     
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
----
 ### <a name="using-the-spotify-api"></a>Using the Spotify API
----
 
 So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
 
@@ -457,11 +452,8 @@ And of course, we can create a `CSV` file that combines both:
 
     curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq -r '.audio_features[] | [.mode, .tempo] | @csv'
   
----
 ## <a name="using-the-humdrum-toolkit"></a>Using the Humdrum Toolkit
----
 ### <a name="basic-pitch-analysis"></a>Basic Pitch Analysis
----
     
 In the following exercises, we will familiarize ourselves with the [Humdrum Toolkit](http://www.humdrum.org/). We will loosely follow the struture of the [Humdrum User Guide](http://www.humdrum.org/guide/). Since our exercises are time-limited, I strongly encourage you to look at the [Humdrum User Guide](http://www.humdrum.org/guide/) and the [Humdrum Reference Manual](http://www.humdrum.org/man/) for more detailed explanations. 
 
