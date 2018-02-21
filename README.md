@@ -13,7 +13,7 @@ leveillegauvin.1@osu.edu
     
 * [2. Using APIs](#using-apis)
     * [2.1. Who's in Space?](#whos-in-space)
-    * [2.2 Grabbing the Weather](#grabbing-the-weather)
+    * [2.2. Grabbing the Weather](#grabbing-the-weather)
     * [2.3. Using the Spotify API](#using-the-spotify-api)
     
 * [3. Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
