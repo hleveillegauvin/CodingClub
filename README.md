@@ -10,14 +10,14 @@ leveillegauvin.1@osu.edu
 * [1. Writing Shell Scripts](#writing-shell-scripts)
     * [1.1. Saying Hello](#saying-hello)
     * [1.2. Counting Characters](#counting-characters)
-    
 * [2. Using APIs](#using-apis)
     * [2.1. Who's in Space?](#whos-in-space)
     * [2.2. Grabbing the Weather](#grabbing-the-weather)
     * [2.3. Using the Spotify API](#using-the-spotify-api)
-    
 * [3. Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
     * [3.1. Basic Pitch Analysis](#basic-pitch-analysis)
+* [4. References](#references)
+    * [4.1. Online Resources](#online-resources)
 
 ## <a name="writing-shell-scripts"></a>1. Writing Shell Scripts
 
@@ -657,6 +657,25 @@ assemble nova001.krn temp_solfg temp_mint
 rm temp_solfg
 rm temp_mint
 ```
+
+## <a name="references"></a>4. References
+### <a name="online-resources"></a>4.1. Online Resources
+
+
+
+#### Humdrum
+  * http://www.humdrum.org/
+  * http://extras.humdrum.org/
+  * http://humdrum.ccarh.org/
+
+#### Regular Expressions
+  * https://regexr.com/
+  
+#### Shell Scripting
+  * [https://developer.apple.com/](https://developer.apple.com/library/content/documentation/OpenSource/Conceptual/ShellScripting/Introduction/Introduction.html#//apple_ref/doc/uid/TP40004268-TP40003516-SW1)
+  
+#### Other
+  * https://www.datascienceatthecommandline.com/
 
 
 
