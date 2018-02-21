@@ -8,8 +8,8 @@ leveillegauvin.1@osu.edu
 # Table of Contents
 
 * [Writing Shell Scripts](#writing-shell-scripts)
-    * [Saying Hello](#saying-hello)
-    * [Counting Characters](#counting-characters)
+    * [1. Saying Hello](#saying-hello)
+    * [2. Counting Characters](#counting-characters)
     
 * [Using APIs](#using-apis)
     * [Who's in Space?](#whos-in-space)
@@ -25,7 +25,7 @@ In this section, we'll learn how to write shell scripts through a series of shor
 
 For all the examples in this section, type or paste the script into the text editor of your choiceand save the file as `[nameofexercise].sh`. Once you have saved the file, type `[nameofexercise].sh` in Terminal to make it executable. Finally, run it with `/[nameofexercise].sh`.
 
-### <a name="saying-hello"></a>Saying Hello
+### <a name="saying-hello"></a>1. Saying Hello
 
 In this first exercise, we'll create a program that prompts for your name and prints a greeting using your name. Every shell script must start with a shebang line `#!/bin/sh`. We'll aslo use the `#` character to add comments to our script and document what we are doing. 
 
@@ -45,7 +45,7 @@ read -p "What is your name? " name
 echo "Hello, $name, nice to meet you!"
 ```
 
-### <a name="counting-characters"></a>Counting Characters
+### <a name="counting-characters"></a>2. Counting Characters
 
 Next, we'll create a program that prompts for an input and returns the number of characters. Again we'll use the `read -p` command to prompt the user for an input, and we'll store the user input under the variable `$input`. We can create a `while loop` to test whether the user actually typed anything; `if` the input is empty, we'll prompt the user again, `else` (i.e. if the string is not empty), we'll count the number of characters. We'll use the `printf` command instead of `echo`, since `echo` hads a arriage return by default, which will add one extra invisible character to our string. We'll then use the `wc`command (word count) to count the number of characters. The standard `wc` output has 3 fields: number of lines, number of words, and number of characters. We can use `awk {'print $3'}` to print the third field (i.e. number of characters). We'll save that number under the variable `$count`. We'll then print a sentence using `echo` that returns the number of characters. Finally, since we created a `while loop` at the beginning of our script, we'll need an `exit` statement to exit the loop.
 
