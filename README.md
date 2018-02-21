@@ -230,6 +230,8 @@ It works! We can now translate our weather tweet to French:
     
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
+---
+
 ### <a name="using-the-spotify-api"></a>Using the Spotify API
 
 So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
