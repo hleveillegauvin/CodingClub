@@ -25,7 +25,7 @@ In this section, we'll learn how to write shell scripts through a series of shor
 
 For all the examples in this section, type or paste the script into the text editor of your choiceand save the file as `[nameofexercise].sh`. Once you have saved the file, type `[nameofexercise].sh` in Terminal to make it executable. Finally, run it with `/[nameofexercise].sh`.
 
-### <a name="saying-hello"></a>1.1 Saying Hello
+### <a name="saying-hello"></a>1.1. Saying Hello
 
 In this first exercise, we'll create a program that prompts for your name and prints a greeting using your name. Every shell script must start with a shebang line `#!/bin/sh`. We'll aslo use the `#` character to add comments to our script and document what we are doing. 
 
