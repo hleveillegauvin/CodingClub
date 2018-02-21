@@ -11,7 +11,9 @@ leveillegauvin.1@osu.edu
     * [Who's in Space?](#whos-in-space)
     * [Grabbing the Weather](#grabbing-the-weather)
     * [Using the Spotify API](#using-the-spotify-api)
-
+    
+* [Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
+    * [Basic Pitch Analysis](#basic-pitch-analysis)
 
 ## <a name="using-apis"></a>Using APIs
 ### <a name="whos-in-space"></a>Who's in Space?
@@ -448,8 +450,152 @@ We can do the same thing for mode (where 1 is major and 0 is minor):
 And of course, we can create a `CSV` file that combines both:
 
     curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq -r '.audio_features[] | [.mode, .tempo] | @csv'
+  
+  
+## <a name="using-the-humdrum-toolkit"></a>Using the Humdrum Toolkit
+### <a name="basic-pitch-analysis"></a>Basic Pitch Analysis
     
-    
+In the following exercises, we will familiarize ourselves with the [Humdrum Toolkit](http://www.humdrum.org/). We will loosely follow the struture of the [Humdrum User Guide](http://www.humdrum.org/guide/). Since our exercises are time-limited, I strongly encourage you to look at the [Humdrum User Guide](http://www.humdrum.org/guide/) and the [Humdrum Reference Manual](http://www.humdrum.org/man/) for more detailed explanations. 
+
+Humdrum can refer to two things. 1) A music encoding syntax, and 2) a series of unix command (commonly refer to as the Humdrum Toolkit) designed to parse Humdrum files.
+
+When you [install Humdrum](http://www.humdrum.org/install/github/), a small sample of Humdrum files (often referred to as "kern" files) are downloaded on your machine. You can find those in the `humdrum-tools` directory:
+
+    cd ~/humdrum-tools/data | ls
+
+For this exercise, we'll make use of a small collection of unaccompanied folk songs from Nova Scotia:
+
+    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia | ls
+
+We see that there are three items in this directory: 1) a readme file, 2) a directory named kern containing the kern files, and 3) a script called Makefile. Let's have a look at the readme file:
+
+    cat README.md
+
+OK, so we know that these songs were collected by Helen Creighton in 1932. Let's change directory and have a look at the kern files. Humdrum has a command called `census`, which provides statistical information about Humdrum files. Let's use it to get an overview of our whole sample. We'll use the wildcard character `*` to get information about all the `.krn` files in the `kern` directory:
+
+    cd ./kern
+    census *.krn
+
+The `census`command also has a `-k` option (kern), which provides additional information about individual kern spines:
+
+    census -k *.krn
+
+But what if we wanted to get stats for every single kern file? We can create a `for loop` to run `census` on every single file. We'll also use `echo` to print the name of the file at the beginning of the loop so we know which file the stats correspond to:
+
+```
+for i in *.krn; do
+echo
+echo "-----------"
+echo $i
+echo "-----------"
+census -k $i
+echo
+done
+```
+
+Reference records in Humdrum are usually indicated with `!!!`. We can use the `grep` command to retrieve reference information. For example, we can retrieve the name of every melody in our Nova Scotia sample:
+
+    grep '!!!OTL:' *.krn
+
+Imagine we wanted to save a clean version of our list of titles. We want to clean our previous output to keep only the names, sort the list alphabetically, and then save it as a text file. We can use hese the `-h` option of `grep` to get rid of the files' headers, then use `sed` to get rid of `!!!OTL:`, and then use the `sort` command:
+
+    grep -h '!!!OTL:' *.krn | sed 's/!!!OTL: //g' | sort > titles.txt
+
+Let's now have a closer look at single song:
+
+    cat nova001.krn
+ 
+Sometimes, you'll want to get rid of the reference records and only keep the music. We can do this using `grep -v`. The `-v` option is for invert-match, meaning that the selected lines are those not matching any of the specified patterns. The `grep`command allows us to use [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) (sometimes refer to as regex or regexp) to search for specific strings. If you want to learn more about regex, I recommend you [watch this series of short videos](http://youtu.be/GVZOJ1rEnUg?list=PLfdtiltiRHWGRPyPMGuLPWuiWgEI9Kp1w). When writing a regular expression, the carret (`^`) can be used to specify that the pattern must start a line:
+
+    grep -v '^!' nova001.krn
+
+One of the most common thing you'll want to do is extract some specific information from a spine. For example, imagine we were only interested in pitch information. We can easily extract pitch-related information in a kern file using the `kern -x` command. 
+
+    kern -x nova001.krn 
+
+The Humdrum Toolkit offers a series of commands to convert one type of notation to another.  For example, the `solfg` command can be used to find the solfege syllables associated with a specific melody:
+
+    kern -x nova001.krn | solfg
+
+Imagine we were interested in calculating the number of occurences of the tonic pitch in a specific song. We can use use `grep -c` to look for lines with the the string "do." Since we're only interested in matches in data records (as opposed to comment or interpretation records), we'll want to eliminate all lines starting with the character `!` (for comment records) or `*` (for interpretation records). We'll use `grep -v '^[!*]'` to invert our search pattern and display lines that do not start (`^`) with neither `!` nor `*`:
+
+    kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do
+
+The proportion of tonic pitches can be manually calculated by simply comparing the resulting pattern count with the number of notes identified by census.
+
+    census -k nova001.krn
+
+We can also calculate it automatically using bash variables. We'll assigne the number of tonic pitches to the variable `$tonic`, the total number of notes to the variable `$total`, and then we'll calculate the proportion using the `bc` command:
+
+```
+tonic=$(kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do)
+total=$(census -k nova001.krn | grep 'Number of notes:' | sed 's/[^0-9]//g')
+bc -l <<< "($tonic/$total)*100"
+```
+
+The `kern -x` command it very useful, but sometimes we'll want to be more specific about the type of information we want to keep. For example, imagine we were interested in the relationship between pitches and phrases. The `kern -x` command gets rid of all the phrase markings in our file (`{}`), making it useless for this problem. Instead, we can use `humsed` to edit our file and only keep the relevant information. The `humsed`command is a special version of `sed` designed specifically to manipulate Humdrum files. In contrast to `sed`, Humdrum interpretations and comments are not affected by `humsed`; only Humdrum data records will be modified:
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn 
+
+Let's breakdown this query:
+
+⋅⋅* `/^[^=]/` is used to tell `humsed` to ignore lines representing barlines. `[^=]` means 'not =' meaning all characters except =. The initial carret (`^`) is an achor used to indicate the start of a string. As such, we are telling `humsed` to only work on lines that start (`^`) with 'not =' (`[^=]`).
+
+⋅⋅* `s/[^A-Ga-gr}{]//g` is used to substitute characters. The initial carret means 'not', meaning substitute all characters except the ones specified within the square brackets. `A-G` means any uppercase letters between A-G, `a-g` means any lower case letters between a and g, and `r`, `}`, and `{` represents unique characters. Since `A-Ga-g` is used to represent pitches, `r` is used to represent rests, and `{ }` are used to represent phrase markings, we are effectively asking `humsed` to find all the characters that do no represent pitches, rests, or phrase markings, and replace them with nothing. Notice how in the query, we typed `}{` instead of `{}`. Since parentheses and brackets often have special meanings, writing it this ways, i.e. `}{`, prevents the terminal to assume that the brackets are used to enclose something.
+
+⋅⋅* `;` is a command separator in Unix. It is the equivalent of pressing `[return]` on your keyboard in the terminal. We are using it because we want to run two `humsed` commands one after another.
+
+⋅⋅* `s/^$/./` is used to find empty lines (which are illegals in Humdrum) and replace them with a dot (`.`) character. The dot character is a null token. The carret (`^`) is an achor representing a the start of a line, and the dollar sign (`$`) is an anchor representing the end of a line. When used together (`^$`), they represent an empty line.
+
+Imagine that we want to know which pitches begin and end phrases in a song. We'll use `grep` to search for all the lines containing either the beginning of a phrase or the end of a phrase:
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]'
+
+We can sort our results using the `sort` command:
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sort
+
+Now imagine we want to tabulate each instance. We'll start by getting rid of octave distinctions (represented by numbers) using `sed`. We'll then use the `sortcount` humdrum extra command to tabulate our results.
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount
+
+We can then use `grep` to see the results only for phrase beginnings:
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '{'
+
+Or for phrase endings:
+
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '}'
+
+Suppose we wanted to get information about melodic intervals. An easy way to do this is to use the `mint` command:
+
+    mint nova001.krn
+
+Once again, we can tabulate all the melodic intervals. We'll get rid of all the non-data records using `grep -v '^[!*]'`. We'll then get rid of barlines and rests using `grep -v '^[=r]'`. You may have noticed that the `mint` command echoes the first pitch token in square bracket (e.g. `[f]`). We will also get rid of that line using `grep -v '^\['`. (Since square brackets have a special meaning in regex, we'll need to escape them using the backslash character (`\`).) Finally, we'll use `sortcount` to tabulate the results.
+
+    mint nova001.krn | grep -v '^[!*]' | grep -v '^=' | grep -v '^[=r]' | grep -v '^\[' | sortcount
+
+By default, `mint` makes a distinction between ascending and descending intervals. We can overide this function using the `-a` option (for "absolute")
+
+    mint -a nova001.krn | grep -v '^[!*]' | grep -v '^=' | grep -v '^[=r]' | grep -v '^\[' | sortcount
+
+We've learned about the `solfg` command and the `mint` command. Now, let's try to create a file that would combined the original `**kern` spine, the `**solfg` spine, and the `**mint` spine. We'll start by creating a two temporary files: one for `**solfg` and one for `**mint`. We'll make sure to keep all three types of records (i.e. comment, interpretation, and data records) so the spines properly align with one another. We'll then use the `assemble`command to create our new file. Finally, we'll use the `rm` command to delete our temporary files
+
+```
+kern -x nova001.krn | solfg | sed 's/[0-9]//g' > temp_solfg
+mint -a nova001.krn > temp_mint
+
+assemble nova001.krn temp_solfg temp_mint
+
+rm temp_solfg
+rm temp_mint
+```
+
+
+
+
+
+
 
 
 
