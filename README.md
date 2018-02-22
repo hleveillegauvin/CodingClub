@@ -10,6 +10,7 @@ leveillegauvin.1@osu.edu
 * [1. Writing Shell Scripts](#writing-shell-scripts)
     * [1.1. Saying Hello](#saying-hello)
     * [1.2. Counting Characters](#counting-characters)
+    * [1.3. Printing Quotes](#printing-quotes)
 * [2. Using APIs](#using-apis)
     * [2.1. Who's in Space?](#whos-in-space)
     * [2.2. Grabbing the Weather](#grabbing-the-weather)
@@ -76,6 +77,28 @@ do
 
 done
 ``` 
+
+### <a name="printing-quotes"></a>1.3. Printing Quotes
+---
+
+Some characters have special meanings in the shell, meaning that by default, they are used for their literal meaning. For example, the `#` character is used to indicate a comment line, and the semi-colon (`;`) is a command separator. But sometimes, you'll need to use these characters for their literal meaning, as opposed to their special meaning. This is called "escpaping," since you escape the special meaning of a character. In the shell, escaping is done by preceding a special character with a backslash (`\`). As such, `#` indicates a comment character, but `\#` indicates the traditional number sign (or hash sign).
+
+In our next shell script, we'll create a program that prompts for a quote and an author. We will display the quotation using quotation marks. Since quotation marks have a special meaning, we'll need to escape them using the backslash character.  We'll start by writing two prompts using `read -p` and we'll store the user's input in the bash variables `$quote`and `$who`. Next, we'll use the `echo`command to print our quote, making sure to escape the double quotes:
+
+```
+#!/bin/sh
+
+# Exercises for Programmers
+# 3 - Printing Quotes
+# Written by: Hubert Léveillé Gauvin
+# Date: 17 December 2016
+
+# Create a program that prompts for a quote and an author. Display the quotation using quotation marks.
+
+read -p "What is the quote? " quote
+read -p "Who said it? " who
+echo "$who says, \"$quote\""
+```
 
 
 
