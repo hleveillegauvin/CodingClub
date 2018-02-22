@@ -1,6 +1,6 @@
 # Coding Club
 
-![coding-club](http://url/to/img.png)
+![coding-club](https://github.com/hleveillegauvin/CodingClub/blob/master/musiccognition-451x266.jpg-01.svg)
 
 
 Cognitive and Systematic Musicology Laboratory, Ohio State University
