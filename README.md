@@ -1,5 +1,8 @@
 # Coding Club
 
+![coding-club](http://url/to/img.png)
+
+
 Cognitive and Systematic Musicology Laboratory, Ohio State University
 
 Written by Hubert Léveillé Gauvin  
