@@ -27,12 +27,12 @@ leveillegauvin.1@osu.edu
 
 In this section, we'll learn how to write shell scripts through a series of short exercises lifted from the book [Exercises for Programmers: 57 Challenges to Develop Your Coding Skills](https://www.amazon.com/Exercises-Programmers-Challenges-Develop-Coding/dp/1680501224/ref=sr_1_1?ie=UTF8&qid=1519245259&sr=8-1&keywords=exercises+for+programmers). 
 
-For all the examples in this section, type or paste the script into the text editor of your choiceand save the file as `[nameofexercise].sh`. Once you have saved the file, type `[nameofexercise].sh` in Terminal to make it executable. Finally, run it with `/[nameofexercise].sh`.
+For all the examples in this section, type or paste the script into the text editor of your choice and save the file as `[nameofexercise].sh`. Once you have saved the file, type `[nameofexercise].sh` in Terminal to make it executable. Finally, run it with `/[nameofexercise].sh`.
 
 ### <a name="saying-hello"></a>1.1. Saying Hello
 ---
 
-In this first exercise, we'll create a program that prompts for your name and prints a greeting using your name. Every shell script must start with a shebang line `#!/bin/sh`. We'll aslo use the `#` character to add comments to our script and document what we are doing. 
+In this first exercise, we'll create a program that prompts for your name and prints a greeting using your name. Every shell script must start with a shebang line `#!/bin/sh`. We'll also use the `#` character to add comments to our script and document what we are doing. 
 
 We'll use the `read -p` command to prompt a user response. The response will be stored under the variable `$name`. We'll that print that name and a greeting phrase using the `echo` command.
 
@@ -53,7 +53,7 @@ echo "Hello, $name, nice to meet you!"
 ### <a name="counting-characters"></a>1.2. Counting Characters
 ---
 
-Next, we'll create a program that prompts for an input and returns the number of characters. Again we'll use the `read -p` command to prompt the user for an input, and we'll store the user input under the variable `$input`. We can create a `while loop` to test whether the user actually typed anything; `if` the input is empty, we'll prompt the user again, `else` (i.e. if the string is not empty), we'll count the number of characters. We'll use the `printf` command instead of `echo`, since `echo` hads a arriage return by default, which will add one extra invisible character to our string. We'll then use the `wc`command (word count) to count the number of characters. The standard `wc` output has 3 fields: number of lines, number of words, and number of characters. We can use `awk {'print $3'}` to print the third field (i.e. number of characters). We'll save that number under the variable `$count`. We'll then print a sentence using `echo` that returns the number of characters. Finally, since we created a `while loop` at the beginning of our script, we'll need an `exit` statement to exit the loop.
+Next, we'll create a program that prompts for an input and returns the number of characters. Again we'll use the `read -p` command to prompt the user for an input, and we'll store the user input under the variable `$input`. We can create a `while loop` to test whether the user actually typed anything; `if` the input is empty, we'll prompt the user again, `else` (i.e. if the string is not empty), we'll count the number of characters. We'll use the `printf` command instead of `echo`, since `echo` adds a carriage return by default, which will add one extra invisible character to our string. We'll then use the `wc` command (word count) to count the number of characters. The standard `wc` output has 3 fields: number of lines, number of words, and number of characters. We can use `awk {'print $3'}` to print the third field (i.e. the number of characters). We'll save that number under the variable `$count`. We'll then print a sentence using `echo` that returns the number of characters. Finally, since we created a `while loop` at the beginning of our script, we'll need an `exit` statement to exit the loop.
 
 ```
 #!/bin/sh
@@ -84,9 +84,9 @@ done
 ### <a name="printing-quotes"></a>1.3. Printing Quotes
 ---
 
-Some characters have special meanings in the shell, meaning that by default, they are used for their literal meaning. For example, the `#` character is used to indicate a comment line, and the semi-colon (`;`) is a command separator. But sometimes, you'll need to use these characters for their literal meaning, as opposed to their special meaning. This is called "escpaping," since you escape the special meaning of a character. In the shell, escaping is done by preceding a special character with a backslash (`\`). As such, `#` indicates a comment character, but `\#` indicates the traditional number sign (or hash sign).
+Some characters have special meanings in the shell, meaning that by default, they are used for their literal meaning. For example, the `#` character is used to indicate a comment line, and the semi-colon (`;`) is a command separator. But sometimes, you'll need to use these characters for their literal meaning, as opposed to their special meaning. This is called "escaping," since you escape the special meaning of a character. In the shell, escaping is done by preceding a special character with a backslash (`\`). As such, `#` indicates a comment character, but `\#` indicates the traditional number sign (or hash sign).
 
-In our next shell script, we'll create a program that prompts for a quote and an author. We will display the quotation using quotation marks. Since quotation marks have a special meaning, we'll need to escape them using the backslash character.  We'll start by writing two prompts using `read -p` and we'll store the user's input in the bash variables `$quote`and `$who`. Next, we'll use the `echo`command to print our quote, making sure to escape the double quotes:
+In our next shell script, we'll create a program that prompts for a quote and an author. We will display the quotation using quotation marks. Since quotation marks have a special meaning, we'll need to escape them using the backslash character.  We'll start by writing two prompts using `read -p` and we'll store the user's input in the bash variables `$quote`and `$who`. Next, we'll use the `echo` command to print our quote, making sure to escape the double quotes:
 
 ```
 #!/bin/sh
@@ -114,12 +114,12 @@ To use an API, we’re going to use the `curl` function. In its most basic form,
 
     curl "http://api.open-notify.org/astros.json"
 
-Yay! `curl` has a bunch of options. One of the useful one is `-s`, which enables silent mode and hides
+Yay! `curl` has a bunch of options. One of the useful ones is `-s`, which enables silent mode and hides
 the progress bar:
 
     curl -s "http://api.open-notify.org/astros.json"
 
-`JSON` is a text format that is ideal data-interchange language. It is human readable, but as you can see, it can be a bit overwhelming. This is where `jq` comes handy. `jq` is a command-line tool that allows you to parse `JSON` file. Unfortunately, it is not preinstalled on your machine. To add it, I recommend you used `brew`. The brew package manager is like an app-store for the terminal. You can install `brew` on your machine following these instructions (OS X: https://brew.sh/ ; Ubuntu: http://linuxbrew.sh/).
+`JSON` is a text format that is ideal data-interchange language. It is human readable, but as you can see, it can be a bit overwhelming. This is where `jq` comes handy. `jq` is a command-line tool that allows you to parse `JSON` file. Unfortunately, it is not preinstalled on your machine. To add it, I recommend you use `brew`. The brew package manager is like an app-store for the terminal. You can install `brew` on your machine following these instructions (OS X: https://brew.sh/ ; Ubuntu: http://linuxbrew.sh/).
 
 __Note: I haven’t tried the Ubuntu version.__
 
@@ -170,7 +170,7 @@ Better. Notice how were are using pipes within `jq`. We know we’re still in `j
 
     curl -s "http://api.open-notify.org/astros.json" | jq '.people[] | [.name, .craft] | @csv'
     
-This worked, but it’s pretty messy. This is because mintinlinebashjq is adding extra " " to make sure things are separated properly. But since our original data was already enclosed in " ", we don’t really need `jq` to do this. We can specify that we want the output to be "raw" using the `-r` option:
+This worked, but it’s pretty messy. This is because jq is adding extra " " to make sure things are separated properly. But since our original data was already enclosed in " ", we don’t really need `jq` to do this. We can specify that we want the output to be "raw" using the `-r` option:
 
     curl -s "http://api.open-notify.org/astros.json" | jq -r '.people[] | [.name, .craft] | @csv'
     
@@ -186,7 +186,7 @@ The `CSV` file we just created can be used with other softwares, like `R` for ex
 
     brew install csvkit
     
-One of the useful tool that is included in the `csvkit` is `csvlook`, which displays `CSV` files in a nice
+One of the useful tools that is included in the `csvkit` is `csvlook`, which displays `CSV` files in a nice
 table:
 
     curl -s "http://api.open-notify.org/astros.json" | jq -r '["NAME", "CRAFT"], (.people[] | [.name, .craft]) | @csv' | csvlook
@@ -216,7 +216,7 @@ We’re ready to use make our first request. Let’s start by looking for the cu
 
     curl -s "https://api.openweathermap.org/data/2.5/weather?q=columbus&APPID=$my_id" | jq
     
-That’s a lot of information! Let’s see... There is something called .main.temp, but the value associated with it seems very high. Let’s look at the API documentation online: http://openweathermap.org/current. Ah! Let’s change the default unit to Fahrenheit. We can do this by modifying the API endpoint (i.e. then end of our url) to specify our preferred unit:
+That’s a lot of information! Let’s see... There is something called .main.temp, but the value associated with it seems very high. Let’s look at the API documentation online: http://openweathermap.org/current. Ah! Let’s change the default unit to Fahrenheit. We can do this by modifying the API endpoint (i.e. the end of our url) to specify our preferred unit:
 
     curl -s "https://api.openweathermap.org/data/2.5/weather?q=columbus&units=imperial&APPID=$my_id" | jq
     
@@ -245,7 +245,7 @@ Since this is a `JSON` file, we might want to use `jq` command to display it in 
 
     head -n 50 "city.list.json" | jq
     
-That didn’t work! That’s because `JSON` is a hierarchical format, and by using the `head` command, we destroyed its hiercharchy. However, if we were to use `jq` on the whole file, things would work normally. Now since `city.list.json` is a pretty big file, this will take a couple of seconds. We can calculate how long it will take by adding `time` before the command you want to measure:
+That didn’t work! That’s because `JSON` is a hierarchical format, and by using the `head` command, we destroyed its hierarchy. However, if we were to use `jq` on the whole file, things would work normally. Now since `city.list.json` is a pretty big file, this will take a couple of seconds. We can calculate how long it will take by adding `time` before the command you want to measure:
 
     time jq '.' "city.list.json"
     
@@ -257,11 +257,11 @@ That worked out okay. We can be even more specific by filtering our output file.
 
     grep -A1 -B1 "Paris" "city.list.json" | grep -B2 '"country": "CA"'
     
-So we found the ID we we’re looking for using `grep`. Alternatively, `jq` has a built-in search function:
+So we found the ID we’re looking for using `grep`. Alternatively, `jq` has a built-in search function:
 
     jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i"))' "city.list.json"
     
-Let’s breakdown our last query. We asked `jq` to open the array using `[]`, search within `.name` for the case-insensitive (`"i"`) string `"paris"`, then within those results, search within `.country` for a case-insensitive string matching `"CA"`, the country code for Canada. Since we’re really interested in the city ID, let’s be even more specific:
+Let’s break down our last query. We asked `jq` to open the array using `[]`, search within `.name` for the case-insensitive (`"i"`) string `"paris"`, then within those results, search within `.country` for a case-insensitive string matching `"CA"`, the country code for Canada. Since we’re really interested in the city ID, let’s be even more specific:
 
     jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i")) | .id' "city.list.json"
     
@@ -269,7 +269,7 @@ Awesome. We can now copy and paste this ID somewhere. But wouldn’t it be bette
 
     city_id=$(jq '.[] | select(.name | match("paris";"i")) | select(.country | match("CA";"i")) | .id' "city.list.json")
     
-If you’ve been following closely, you might wonder why we hard coded the string `"paris"` in the previous query, instead of using the shell variable `$city`. The answer is that shell variables cannot be used as is in a `jq` command. However, we can reassign a shell variables to `jq` variables. In the following command, we are using the `--arg` option to reassign the shell variable `$city` to the `jq` variable `$CITY`:
+If you’ve been following closely, you might wonder why we hardcoded the string `"paris"` in the previous query, instead of using the shell variable `$city`. The answer is that shell variables cannot be used as is in a `jq` command. However, we can reassign shell variables to `jq` variables. In the following command, we are using the `--arg` option to reassign the shell variable `$city` to the `jq` variable `$CITY`:
 
     city_id=$(jq --arg CITY "$city" '.[] | select(.name | match($CITY;"i")) | select(.country | match("CA";"i")) | .id' "city.list.json")
 
@@ -292,7 +292,7 @@ To do this, we’ll need to retrieve three bits of information: `.temp`; `.temp_
     description=$(curl -s "https://api.openweathermap.org/data/2.5/weather?id=$city_id &units=metric&APPID=$my_id" | jq '.weather[].description' | sed 's/"//g' | python -c "print raw_input().capitalize()")
     echo "The weather is currently "$current_temp"C in Paris, Ontario. "$description ". Temperatures are expected to climb up to "$temp_max"C."
 
-Since Canada is a bilingual country, it would be nice if we could translate our last ouptut to French. Fortunately, the `trans` command from the `translate-shell` package uses the Google Translate API (and others) to do just that. We can install it using `brew`:
+Since Canada is a bilingual country, it would be nice if we could translate our last output to French. Fortunately, the `trans` command from the `translate-shell` package uses the Google Translate API (and others) to do just that. We can install it using `brew`:
 
     brew install translate-shell
     
@@ -300,19 +300,19 @@ We can see if it worked:
 
     which -a trans
     
-If you have the `humdrum toolkit`installed on your computer, you already have another command called `trans`. That will be problematic. We can overcome this problem by renaming our newly installed `trans` command to `translate` using an `alias`:
+If you have the `humdrum toolkit` installed on your computer, you already have another command called `trans`. That will be problematic. We can overcome this problem by renaming our newly installed `trans` command to `translate` using an `alias`:
 
     alias translate=/usr/local/bin/trans
     
-This worked as a temporarily solution, but won’t work after we close our terminal. To make it
+This worked as a temporary solution, but won’t work after we close our terminal. To make it
 permanent, we can add the `alias` to our `bash_profile`:
 
     echo "alias translate=/usr/local/bin/trans" >> ~/.bash_profile
     source ~/.bash_profile
     
-__Note: Since `man`is an independent program, we can’t do `man translate`, but `translate -h`will work.__
+__Note: Since `man` is an independent program, we can’t do `man translate`, but `translate -h` will work.__
 
-We can test our newly renamed command. We’ll used the `-to` option to specify the target language and `-b` to enable brief mode:
+We can test our newly renamed command. We’ll use the `-to` option to specify the target language and `-b` to enable brief mode:
 
     translate -to "French" -b 'Hello'
     
@@ -320,14 +320,14 @@ It works! We can now translate our weather tweet to French:
 
     echo "The weather is currently "$current_temp"C in Paris, Ontario. "$description". Temperatures are expected to climb up to "$temp_max"C." | translate -to "French" -b
     
-__Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we we’re to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
+__Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we were to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
 
 ### <a name="using-the-spotify-api"></a>2.3. Using the Spotify API
 ---
 
 So far we have encountered APIs requiring no authentication, and APIs requiring a simple API key. But sometimes, in addition to having a unique key, APIs will require that you use an access token. While your key is permanent, your access token will only be valid for a limited period of time. The OAuth protocol that Spotify uses for their API works that way.
 
-__Note: Spotify has a Interactive API Web Console that allows you to use their API without having to code (but what’s the fun in that?). You can find more about it at: https://developer.spotify.com/web-api/console/__
+__Note: Spotify has an interactive API Web Console that allows you to use their API without having to code (but what’s the fun in that?). You can find more about it at: https://developer.spotify.com/web-api/console/__
 
 To use the Spotify API, you’ll first need to register on https://developer.spotify.com/. Use your regular Spotify username and password to create your developer app. The app can be called anything. You will be granted a Spotify developer client ID and client secret.
 
@@ -351,7 +351,7 @@ echo $result;
 
 ?>
 ```
-__Note: if you're on OS X, `PHP` is pre-installed on your computer. If you're running Ubuntu (or comething similar), you might have to install it manually.__
+__Note: if you're on OS X, `PHP` is pre-installed on your computer. If you're running Ubuntu (or something similar), you might have to install it manually.__
 
 We are going to use this existing script to get an access token. First, we’ll modify the script by adding our client id and secret:
 
@@ -375,7 +375,7 @@ echo $result;
 ?>
 ```
 
-Second, we’ll add a `PHP she-bang line at the very beginning of our script to tell our shell that this is written in `PHP`:
+Second, we’ll add a `PHP` she-bang line at the very beginning of our script to tell our shell that this is written in `PHP`:
 
 ```
 #!/usr/bin/php
@@ -428,7 +428,7 @@ Now that we have a valid token, we can make our first query. Spotify’s API doc
 
 __Note: All endpoints should begin with a forward slash (/). On the Spotify website, the forward slash for "Audio Analysis for a Track" endpoint is missing. You will need to manually add the forward slash at the beginning of this endpoint to access this information.__
 
-3. Spotify IDs can be found though the Spotify app. Simply select the track, album, or artist, click share, and select URI to copy the ID.
+3. Spotify IDs can be found through the Spotify app. Simply select the track, album, or artist, click share, and select URI to copy the ID.
 
 __Note: By default, if you copy a Spotify ID from the app, it will come in this format: spotify:track:4BRkPBUxOYffM2QXVlq7aC. To use this ID with the Spotify API, you will need to trim the beginning part and only keep 4BRkPBUxOYffM2QXVlq7aC. We can do this using the following sed command: `echo "spotify:track:4BRkPBUxOYffM2QXVlq7aC" | sed 's/.*://g'.`__
 
@@ -482,7 +482,7 @@ Now, imagine we wanted to make our `CSV` file more useful by adding a column for
 
 curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.tracks.items[] | [.artists[].name, "Revolver", .name, .duration_ms] | @csv'
 
-That works ok, but the fact that it’s hard coded makes it harder for us to reuse the code. A better solution would be to assign the value of the album’s name stored under `.name` to a variable, and then call that variable when needed:
+That works ok, but the fact that it’s hardcoded makes it harder for us to reuse the code. A better solution would be to assign the value of the album’s name stored under `.name` to a variable, and then call that variable when needed:
 
     curl -s "https://api.spotify.com/v1/albums/3PRoXYsngSwjEQWR5PsHWR/" -H "Authorization: Bearer $token" | jq -r '.name as $album_name | .tracks.items[] | [.artists[].name, $album_name, .name, .duration_ms] | @csv'
 
@@ -496,7 +496,7 @@ Some albums, however, have more than 50 tracks. In order to get around this limi
 
     curl -s "https://api.spotify.com/v1/albums/3exqrnwvtUAEVCwar8xIcs/tracks?offset=50&limit=50" -H "Authorization: Bearer $token" | jq '.items[].name'
 
-Let’s see what else we can do with the Spotify API. One of the endpoint is called "audio analysis" and gives us some information about single songs. Let’s try it out:
+Let’s see what else we can do with the Spotify API. One of the endpoints is called "audio analysis" and gives us some information about single songs. Let’s try it out:
 
     curl -s "https://api.spotify.com/v1/audio-analysis/2vEQ9zBiwbAVXzS2SOxodY" -H "Authorization: Bearer $token" | jq '.'
     
@@ -548,9 +548,9 @@ And of course, we can create a `CSV` file that combines both:
 ### <a name="basic-pitch-analysis"></a>3.1. Basic Pitch Analysis
 ---
     
-In the following exercises, we will familiarize ourselves with the [Humdrum Toolkit](http://www.humdrum.org/). We will loosely follow the struture of the [Humdrum User Guide](http://www.humdrum.org/guide/). Since our exercises are time-limited, I strongly encourage you to look at the [Humdrum User Guide](http://www.humdrum.org/guide/) and the [Humdrum Reference Manual](http://www.humdrum.org/man/) for more detailed explanations. 
+In the following exercises, we will familiarize ourselves with the [Humdrum Toolkit](http://www.humdrum.org/). We will loosely follow the structure of the [Humdrum User Guide](http://www.humdrum.org/guide/). Since our exercises are time-limited, I strongly encourage you to look at the [Humdrum User Guide](http://www.humdrum.org/guide/) and the [Humdrum Reference Manual](http://www.humdrum.org/man/) for more detailed explanations. 
 
-Humdrum can refer to two things. 1) A music encoding syntax, and 2) a series of unix command (commonly refer to as the Humdrum Toolkit) designed to parse Humdrum files.
+Humdrum can refer to two things. 1) A music encoding syntax, and 2) a series of Unix command (commonly referred to as the Humdrum Toolkit) designed to parse Humdrum files.
 
 When you [install Humdrum](http://www.humdrum.org/install/github/), a small sample of Humdrum files (often referred to as "kern" files) are downloaded on your machine. You can find those in the `humdrum-tools` directory:
 
@@ -569,7 +569,7 @@ OK, so we know that these songs were collected by Helen Creighton in 1932. Let's
     cd ./kern
     census *.krn
 
-The `census`command also has a `-k` option (kern), which provides additional information about individual kern spines:
+The `census` command also has a `-k` option (kern), which provides additional information about individual kern spines:
 
     census -k *.krn
 
@@ -590,7 +590,7 @@ Reference records in Humdrum are usually indicated with `!!!`. We can use the `g
 
     grep '!!!OTL:' *.krn
 
-Imagine we wanted to save a clean version of our list of titles. We want to clean our previous output to keep only the names, sort the list alphabetically, and then save it as a text file. We can use hese the `-h` option of `grep` to get rid of the files' headers, then use `sed` to get rid of `!!!OTL:`, and then use the `sort` command:
+Imagine we wanted to save a clean version of our list of titles. We want to clean our previous output to keep only the names, sort the list alphabetically, and then save it as a text file. We can use the `-h` option of `grep` to get rid of the files' headers, then use `sed` to get rid of `!!!OTL:`, and then use the `sort` command:
 
     grep -h '!!!OTL:' *.krn | sed 's/!!!OTL: //g' | sort > titles.txt
 
@@ -598,11 +598,11 @@ Let's now have a closer look at single song:
 
     cat nova001.krn
  
-Sometimes, you'll want to get rid of the reference records and only keep the music. We can do this using `grep -v`. The `-v` option is for invert-match, meaning that the selected lines are those not matching any of the specified patterns. The `grep`command allows us to use [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) (sometimes refer to as regex or regexp) to search for specific strings. If you want to learn more about regex, I recommend you [watch this series of short videos](http://youtu.be/GVZOJ1rEnUg?list=PLfdtiltiRHWGRPyPMGuLPWuiWgEI9Kp1w). When writing a regular expression, the carret (`^`) can be used to specify that the pattern must start a line:
+Sometimes, you'll want to get rid of the reference records and only keep the music. We can do this using `grep -v`. The `-v` option is for invert-match, meaning that the selected lines are those not matching any of the specified patterns. The `grep` command allows us to use [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) (sometimes referred to as regex or regexp) to search for specific strings. If you want to learn more about regex, I recommend you [watch this series of short videos](http://youtu.be/GVZOJ1rEnUg?list=PLfdtiltiRHWGRPyPMGuLPWuiWgEI9Kp1w). When writing a regular expression, the caret (`^`) can be used to specify that the pattern must start a line:
 
     grep -v '^!' nova001.krn
 
-One of the most common thing you'll want to do is extract some specific information from a spine. For example, imagine we were only interested in pitch information. We can easily extract pitch-related information in a kern file using the `kern -x` command. 
+One of the most common things you'll want to do is extract some specific information from a spine. For example, imagine we were only interested in pitch information. We can easily extract pitch-related information in a kern file using the `kern -x` command. 
 
     kern -x nova001.krn 
 
@@ -610,7 +610,7 @@ The Humdrum Toolkit offers a series of commands to convert one type of notation 
 
     kern -x nova001.krn | solfg
 
-Imagine we were interested in calculating the number of occurences of the tonic pitch in a specific song. We can use use `grep -c` to look for lines with the the string "do." Since we're only interested in matches in data records (as opposed to comment or interpretation records), we'll want to eliminate all lines starting with the character `!` (for comment records) or `*` (for interpretation records). We'll use `grep -v '^[!*]'` to invert our search pattern and display lines that do not start (`^`) with neither `!` nor `*`:
+Imagine we were interested in calculating the number of occurrences of the tonic pitch in a specific song. We can use `grep -c` to look for lines with the string "do." Since we're only interested in matches in data records (as opposed to comment or interpretation records), we'll want to eliminate all lines starting with the character `!` (for comment records) or `*` (for interpretation records). We'll use `grep -v '^[!*]'` to invert our search pattern and display lines that do not start (`^`) with either `!` nor `*`:
 
     kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do
 
@@ -618,7 +618,7 @@ The proportion of tonic pitches can be manually calculated by simply comparing t
 
     census -k nova001.krn
 
-We can also calculate it automatically using bash variables. We'll assigne the number of tonic pitches to the variable `$tonic`, the total number of notes to the variable `$total`, and then we'll calculate the proportion using the `bc` command:
+We can also calculate it automatically using bash variables. We'll assign the number of tonic pitches to the variable `$tonic`, the total number of notes to the variable `$total`, and then we'll calculate the proportion using the `bc` command:
 
 ```
 tonic=$(kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do)
@@ -626,19 +626,19 @@ total=$(census -k nova001.krn | grep 'Number of notes:' | sed 's/[^0-9]//g')
 bc -l <<< "($tonic/$total)*100"
 ```
 
-The `kern -x` command it very useful, but sometimes we'll want to be more specific about the type of information we want to keep. For example, imagine we were interested in the relationship between pitches and phrases. The `kern -x` command gets rid of all the phrase markings in our file (`{}`), making it useless for this problem. Instead, we can use `humsed` to edit our file and only keep the relevant information. The `humsed`command is a special version of `sed` designed specifically to manipulate Humdrum files. In contrast to `sed`, Humdrum interpretations and comments are not affected by `humsed`; only Humdrum data records will be modified:
+The `kern -x` command it very useful, but sometimes we'll want to be more specific about the type of information we want to keep. For example, imagine we were interested in the relationship between pitches and phrases. The `kern -x` command gets rid of all the phrase markings in our file (`{}`), making it useless for this problem. Instead, we can use `humsed` to edit our file and only keep the relevant information. The `humsed` command is a special version of `sed` designed specifically to manipulate Humdrum files. In contrast to `sed`, Humdrum interpretations and comments are not affected by `humsed`; only Humdrum data records will be modified:
 
     humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn 
 
-Let's breakdown this query:
+Let's break down this query:
 
-  * `/^[^=]/` is used to tell `humsed` to ignore lines representing barlines. `[^=]` means 'not =' meaning all characters except =. The initial carret (`^`) is an achor used to indicate the start of a string. As such, we are telling `humsed` to only work on lines that start (`^`) with 'not =' (`[^=]`).
+  * `/^[^=]/` is used to tell `humsed` to ignore lines representing barlines. `[^=]` means 'not =' meaning all characters except =. The initial caret (`^`) is an anchor used to indicate the start of a string. As such, we are telling `humsed` to only work on lines that start (`^`) with 'not =' (`[^=]`).
 
-  * `s/[^A-Ga-gr}{]//g` is used to substitute characters. The initial carret means 'not', meaning substitute all characters except the ones specified within the square brackets. `A-G` means any uppercase letters between A-G, `a-g` means any lower case letters between a and g, and `r`, `}`, and `{` represents unique characters. Since `A-Ga-g` is used to represent pitches, `r` is used to represent rests, and `{ }` are used to represent phrase markings, we are effectively asking `humsed` to find all the characters that do no represent pitches, rests, or phrase markings, and replace them with nothing. Notice how in the query, we typed `}{` instead of `{}`. Since parentheses and brackets often have special meanings, writing it this ways, i.e. `}{`, prevents the terminal to assume that the brackets are used to enclose something.
+  * `s/[^A-Ga-gr}{]//g` is used to substitute characters. The initial caret means 'not', meaning substitute all characters except the ones specified within the square brackets. `A-G` means any uppercase letters between A-G, `a-g` means any lower case letters between a and g, and `r`, `}`, and `{` represents unique characters. Since `A-Ga-g` is used to represent pitches, `r` is used to represent rests, and `{ }` are used to represent phrase markings, we are effectively asking `humsed` to find all the characters that do no represent pitches, rests, or phrase markings, and replace them with nothing. Notice how in the query, we typed `}{` instead of `{}`. Since parentheses and brackets often have special meanings, writing it this way, i.e. `}{`, prevents the terminal to assume that the brackets are used to enclose something.
 
   * `;` is a command separator in Unix. It is the equivalent of pressing `[return]` on your keyboard in the terminal. We are using it because we want to run two `humsed` commands one after another.
 
-  * `s/^$/./` is used to find empty lines (which are illegals in Humdrum) and replace them with a dot (`.`) character. The dot character is a null token. The carret (`^`) is an achor representing a the start of a line, and the dollar sign (`$`) is an anchor representing the end of a line. When used together (`^$`), they represent an empty line.
+  * `s/^$/./` is used to find empty lines (which are illegals in Humdrum) and replace them with a dot (`.`) character. The dot character is a null token. The caret (`^`) is an anchor representing the start of a line, and the dollar sign (`$`) is an anchor representing the end of a line. When used together (`^$`), they represent an empty line.
 
 Imagine that we want to know which pitches begin and end phrases in a song. We'll use `grep` to search for all the lines containing either the beginning of a phrase or the end of a phrase:
 
@@ -672,7 +672,7 @@ By default, `mint` makes a distinction between ascending and descending interval
 
     mint -a nova001.krn | grep -v '^[!*]' | grep -v '^=' | grep -v '^[=r]' | grep -v '^\[' | sortcount
 
-We've learned about the `solfg` command and the `mint` command. Now, let's try to create a file that would combined the original `**kern` spine, the `**solfg` spine, and the `**mint` spine. We'll start by creating a two temporary files: one for `**solfg` and one for `**mint`. We'll make sure to keep all three types of records (i.e. comment, interpretation, and data records) so the spines properly align with one another. We'll then use the `assemble`command to create our new file. Finally, we'll use the `rm` command to delete our temporary files
+We've learned about the `solfg` command and the `mint` command. Now, let's try to create a file that would combine the original `**kern` spine, the `**solfg` spine, and the `**mint` spine. We'll start by creating two temporary files: one for `**solfg` and one for `**mint`. We'll make sure to keep all three types of records (i.e. comment, interpretation, and data records) so the spines properly align with one another. We'll then use the `assemble` command to create our new file. Finally, we'll use the `rm` command to delete our temporary files
 
 ```
 kern -x nova001.krn | solfg | sed 's/[0-9]//g' > temp_solfg
