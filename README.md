@@ -703,6 +703,9 @@ rm temp_mint
   * http://www.humdrum.org/
   * http://extras.humdrum.org/
   * http://humdrum.ccarh.org/
+  * http://wiki.ccarh.org/images/b/b5/Harmony1.pdf
+  * http://humdrum.ccarh.org/
+  * http://kern.ccarh.org/
 
 #### Regular Expressions
   * https://regexr.com/
