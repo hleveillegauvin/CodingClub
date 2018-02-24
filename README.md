@@ -577,12 +577,12 @@ But what if we wanted to get stats for every single kern file? We can create a `
 
 ```
 for i in *.krn; do
-echo
-echo "-----------"
-echo $i
-echo "-----------"
-census -k $i
-echo
+    echo
+    echo "-----------"
+    echo $i
+    echo "-----------"
+    census -k $i
+    echo
 done
 ```
 
