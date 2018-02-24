@@ -554,11 +554,11 @@ Humdrum can refer to two things. 1) A music encoding syntax, and 2) a series of 
 
 When you [install Humdrum](http://www.humdrum.org/install/github/), a small sample of Humdrum files (often referred to as "kern" files) are downloaded on your machine. You can find those in the `humdrum-tools` directory:
 
-    cd ~/humdrum-tools/data | ls
+    cd ~/humdrum-tools/data; ls
 
 For this exercise, we'll make use of a small collection of unaccompanied folk songs from Nova Scotia:
 
-    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia | ls
+    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia; ls
 
 We see that there are three items in this directory: 1) a readme file, 2) a directory named kern containing the kern files, and 3) a script called Makefile. Let's have a look at the readme file:
 
@@ -606,13 +606,19 @@ One of the most common things you'll want to do is extract some specific informa
 
     kern -x nova001.krn 
 
-The Humdrum Toolkit offers a series of commands to convert one type of notation to another.  For example, the `solfg` command can be used to find the solfege syllables associated with a specific melody:
+The Humdrum Toolkit offers a series of commands to convert one type of notation to another.  For example, the `solfa` command can be used to find the moveable-do syllables associated with a specific melody. Just like the `kern`command above, `solfa` has a `-x` option:
 
-    kern -x nova001.krn | solfg
+    solfa -x nova001.krn
+    
+__Note: Do not confuse `solfa`, which converts a kern spine to moveable-do syllables, to `solfg`, which converts a kern spine to fixed-do syllables.__
 
 Imagine we were interested in calculating the number of occurrences of the tonic pitch in a specific song. We can use `grep -c` to look for lines with the string "do." Since we're only interested in matches in data records (as opposed to comment or interpretation records), we'll want to eliminate all lines starting with the character `!` (for comment records) or `*` (for interpretation records). We'll use `grep -v '^[!*]'` to invert our search pattern and display lines that do not start (`^`) with either `!` nor `*`:
 
-    kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do
+    solfa -x nova001.krn | grep -v '^[!*]' | grep -c do
+
+Alternatively to `grep -v '^[!*]'`, we can use the `rid -GLId` humdrum command to eliminate specified Humdrum record types: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records:
+
+    solfa -x nova001.krn | rid -GLId | grep -c do
 
 The proportion of tonic pitches can be manually calculated by simply comparing the resulting pattern count with the number of notes identified by census.
 
@@ -621,12 +627,12 @@ The proportion of tonic pitches can be manually calculated by simply comparing t
 We can also calculate it automatically using bash variables. We'll assign the number of tonic pitches to the variable `$tonic`, the total number of notes to the variable `$total`, and then we'll calculate the proportion using the `bc` command:
 
 ```
-tonic=$(kern -x nova001.krn | solfg | grep -v '^[!*]' | grep -c do)
+tonic=$(solfa -x nova001.krn | rid -GLId | grep -c do)
 total=$(census -k nova001.krn | grep 'Number of notes:' | sed 's/[^0-9]//g')
 bc -l <<< "($tonic/$total)*100"
 ```
 
-The `kern -x` command it very useful, but sometimes we'll want to be more specific about the type of information we want to keep. For example, imagine we were interested in the relationship between pitches and phrases. The `kern -x` command gets rid of all the phrase markings in our file (`{}`), making it useless for this problem. Instead, we can use `humsed` to edit our file and only keep the relevant information. The `humsed` command is a special version of `sed` designed specifically to manipulate Humdrum files. In contrast to `sed`, Humdrum interpretations and comments are not affected by `humsed`; only Humdrum data records will be modified:
+The `-x` option is very useful, but sometimes we'll want to be more specific about the type of information we want to keep. For example, imagine we were interested in the relationship between pitches and phrases. The `solfa -x` command gets rid of all the phrase markings in our file (`{}`), making it useless for this problem. Instead, we can use `humsed` to edit our file and only keep the relevant information. The `humsed` command is a special version of `sed` designed specifically to manipulate Humdrum files. In contrast to `sed`, Humdrum interpretations and comments are not affected by `humsed`; only Humdrum data records will be modified:
 
     humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn 
 
@@ -642,45 +648,49 @@ Let's break down this query:
 
 Imagine that we want to know which pitches begin and end phrases in a song. We'll use `grep` to search for all the lines containing either the beginning of a phrase or the end of a phrase:
 
-    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]'
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfa | rid -GLId | grep '[}{]'
 
 We can sort our results using the `sort` command:
 
-    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sort
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfa | rid -GLId | grep '[}{]' | sort
 
 Now imagine we want to tabulate each instance. We'll start by getting rid of octave distinctions (represented by numbers) using `sed`. We'll then use the `sortcount` humdrum extra command to tabulate our results.
 
-    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfa | rid -GLId | grep '[}{]' | sed 's/[0-9]//g' | sortcount
 
 We can then use `grep` to see the results only for phrase beginnings:
 
-    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '{'
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfa | rid -GLId | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '{'
 
 Or for phrase endings:
 
-    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfg | grep -v '^[!*]' | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '}'
+    humsed '/^[^=]/ s/[^A-Ga-gr}{]//g; s/^$/./' nova001.krn | solfa | rid -GLId | grep '[}{]' | sed 's/[0-9]//g' | sortcount | grep '}'
 
 Suppose we wanted to get information about melodic intervals. An easy way to do this is to use the `mint` command:
 
     mint nova001.krn
 
-Once again, we can tabulate all the melodic intervals. We'll get rid of all the non-data records using `grep -v '^[!*]'`. We'll then get rid of barlines and rests using `grep -v '^[=r]'`. You may have noticed that the `mint` command echoes the first pitch token in square bracket (e.g. `[f]`). We will also get rid of that line using `grep -v '^\['`. (Since square brackets have a special meaning in regex, we'll need to escape them using the backslash character (`\`).) Finally, we'll use `sortcount` to tabulate the results.
+Once again, we can tabulate all the melodic intervals. We'll get rid of all the non-data records using `rid -GLId`. We'll then get rid of barlines and rests using `grep -v '^[=r]'`. You may have noticed that the `mint` command echoes the first pitch token in square bracket (e.g. `[f]`). We will also get rid of that line using `grep -v '^\['`. (Since square brackets have a special meaning in regex, we'll need to escape them using the backslash character (`\`).) Finally, we'll use `sortcount` to tabulate the results.
 
-    mint nova001.krn | grep -v '^[!*]' | grep -v '^=' | grep -v '^[=r]' | grep -v '^\[' | sortcount
+    mint nova001.krn | rid -GLId | grep -v '^[=r]' | grep -v '^\[' | sortcount
 
 By default, `mint` makes a distinction between ascending and descending intervals. We can overide this function using the `-a` option (for "absolute")
 
-    mint -a nova001.krn | grep -v '^[!*]' | grep -v '^=' | grep -v '^[=r]' | grep -v '^\[' | sortcount
+    mint -a nova001.krn | rid -GLId | grep -v '^[=r]' | grep -v '^\[' | sortcount
 
-We've learned about the `solfg` command and the `mint` command. Now, let's try to create a file that would combine the original `**kern` spine, the `**solfg` spine, and the `**mint` spine. We'll start by creating two temporary files: one for `**solfg` and one for `**mint`. We'll make sure to keep all three types of records (i.e. comment, interpretation, and data records) so the spines properly align with one another. We'll then use the `assemble` command to create our new file. Finally, we'll use the `rm` command to delete our temporary files
+The  `sortcount` command has a `-p` option, which converts the results of `sortcount` into a percentage value, which can also be useful:
+
+    mint -a nova001.krn | rid -GLId | grep -v '^[=r]' | grep -v '^\[' | sortcount -p
+
+We've learned about the `solfa` command and the `mint` command. Now, let's try to create a file that would combine the original `**kern` spine, the `**solfa` spine, and the `**mint` spine. We'll start by creating two temporary files: one for `**solfg` and one for `**mint`. We'll make sure to keep all three types of records (i.e. comment, interpretation, and data records) so the spines properly align with one another. We'll then use the `assemble` command to create our new file. Finally, we'll use the `rm` command to delete our temporary files
 
 ```
-kern -x nova001.krn | solfg | sed 's/[0-9]//g' > temp_solfg
+kern -x nova001.krn | solfa | sed 's/[0-9]//g' > temp_solfa
 mint -a nova001.krn > temp_mint
 
-assemble nova001.krn temp_solfg temp_mint
+assemble nova001.krn temp_solfa temp_mint
 
-rm temp_solfg
+rm temp_solfa
 rm temp_mint
 ```
 
