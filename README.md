@@ -694,6 +694,35 @@ rm temp_solfa
 rm temp_mint
 ```
 
+### <a name="basic-pitch-analysis"></a>3.1. Basic Rhythm Analysis
+---
+
+In the last exercise, we learned how to do basic pitch analysis using the Humdrum Toolkit. In this exercise, we'll be focusing on rhythm. 
+We'll make use of a small collection of unaccompanied folk songs from Nova Scotia:
+
+    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia; ls
+
+Rhythmic information in Humdrum is encoded using the `**recip` representation. `**recip` is a subset of the `**kern` representation. The following command can be used to generate a `**recip` spine using a `**kern` spine:
+
+    humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'
+    
+Let's break down this query:
+
+  * `/^[^=]/` is used to tell `humsed` to ignore lines representing barlines. `[^=]` means 'not =' meaning all characters except =. The initial caret (`^`) is an anchor used to indicate the start of a string. As such, we are telling `humsed` to only work on lines that start (`^`) with 'not =' (`[^=]`).
+
+  * `s/[^0-9.r ]//g` is used to substitute characters. The initial caret means 'not', meaning substitute all characters except the ones specified within the square brackets. `0-9` means any number, `.` means any dot character, and `r` represents rests. Since `0-9.` is used to represent rhytms and  `r` is used to represent rests, we are effectively asking `humsed` to find all the characters that do not represent rhythms or rests, and replace them with nothing.
+
+  * `;` is a command separator in Unix. It is the equivalent of pressing `[return]` on your keyboard in the terminal. We are using it because we want to run two `humsed` commands one after another.
+
+  * `s/^$/./` is used to find empty lines (which are illegals in Humdrum) and replace them with a dot (`.`) character. The dot character is a null token. The caret (`^`) is an anchor representing the start of a line, and the dollar sign (`$`) is an anchor representing the end of a line. When used together (`^$`), they represent an empty line.
+  
+  * `sed 's/\*\*kern/**recip/'` is used to to change the exclusive interpretation from `**kern` to `**recip`.
+  
+  
+  
+  
+
+
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
 
