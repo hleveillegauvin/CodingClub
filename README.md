@@ -718,9 +718,44 @@ Let's break down this query:
   
   * `sed 's/\*\*kern/**recip/'` is used to to change the exclusive interpretation from `**kern` to `**recip`.
   
+One of the things we might be interested in doing is looking for rhythmic patterns. The `context`command can be used to amalgamate one or more successive input data records into single records according to user-defined criteria. For example, imagine we wanted to determine the most common rhythmic pattern spanning a single measure:
+
+    humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/' | context -b ^= -o ^= | rid -GLId | sortcount
+    
+Again, let's break down this query:  
+
+  * `humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'` converts `**kern` to `**recip`, as described above.
   
+  * `context -e ^= -o ^=` amalgamates all the data within one measure and prints it on a single line. The `-b ^=` option indicates to begin amalgamating when a line that starts (`^`) with the `=` character (i.e. a barline). The `-o ^=` option indicates that lines starting (`^`) with a `=` character should be omitted (`-o`).
+  
+  * `rid -GLId` eliminates specific Humdrum records: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records.
+  
+  * `sortcount` tabulates the results.
+  
+Determining the most common rhythmic pattern spanning a single measure is a bit unnatural. Perhaps a more interesting query would be to compare rhythmic patterns spanning musical phrases. In Humdrum, phrases are identified using `{ }`. Currently, phrase markings were deleted from our `**recip` spine. We can change that by modifying our original query:
+
+    humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'
   
+Now that we have phrase markings, let's used the context command again to search for rhythmic patterns 
   
+    humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/' | context -b { -o ^= | humsed 's/[}{]//g' | rid -GLId | sortcount
+
+Perhaps unsurprisingly, all the phrases in this song have a different rhythmic structure. Let's try the same thing on the whole collection of Nova Scotian songs. We'll use `cat` to concatenate all the songs in our directory together:
+
+    cat *.krn | humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' | sed 's/\*\*kern/**recip/' | context -b { -o ^= | humsed 's/[}{]//g' | rid -GLId | sortcount
+
+Sometimes it can be useful to estimate the duration of a piece based on its tempo. For example, imagine we wanted to record a collection of piano rags by Scott Joplin. Let's start by changing our current working directory:
+
+        cd ~/humdrum-tools/data/joplin/kern ; ls
+	
+Th `dur` command converts rhythmic notation to durations in seconds based on the tempo of a song. The `-x` option is used to suppress all non-duration output for processed spines. `rid -GLId` eliminates specific Humdrum records: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records. `grep -v '='` eliminates barlines, and `stats` calculates basic statistics on the first column of our output. 
+
+    dur -x antoinette.krn | rid -GLId | grep -v '=' | stats
+	
+The estimated duration of this song is 114.988 seconds. Similarly, we can use cat to estimate the dureation of our whole collection:
+
+    cat *.krn | dur -x | rid -GLId | grep -v '=' | stats
+    
 
 
 ## <a name="references"></a>4. References
