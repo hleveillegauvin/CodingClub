@@ -695,7 +695,7 @@ rm temp_solfa
 rm temp_mint
 ```
 
-## <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhytmic Analysis
+### <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhytmic Analysis
 ---
 
 In the last exercise, we learned how to do basic pitch analysis using the Humdrum Toolkit. In this exercise, we'll be focusing on rhythm. 
