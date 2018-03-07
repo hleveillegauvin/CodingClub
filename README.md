@@ -785,7 +785,9 @@ Based on our last command, the mean duration notes falling on a downbeat in this
 
     assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2].[0-9]*[[:space:]]" |  awk -F[[:space:]] '{ print $2 }' | stats
 
-The mean duration of notes on upbeat is 0.50, meaning that every notes on upbeats are eight notes. It looks like, in this song, notes on upbeats are shorter than notes on downbeats.
+The mean duration of notes on upbeat is 0.50, meaning that every notes on upbeats are eight notes. It looks like, in this song, notes on upbeats are shorter than notes on downbeats. Once we're done, we can delete our temporary files using `rm`:
+
+    rm nova001.beat nova001.dur nova001.recip
 
 Sometimes it can be useful to estimate the duration of a piece based on its tempo. For example, imagine we wanted to record a collection of piano rags by Scott Joplin. Let's start by changing our current working directory:
 
@@ -825,6 +827,7 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
   * http://wiki.ccarh.org/images/b/b5/Harmony1.pdf
   * http://humdrum.ccarh.org/
   * http://kern.ccarh.org/
+  * http://verovio.humdrum.org/
 
 #### Regular Expressions
   * https://regexr.com/
