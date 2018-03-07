@@ -752,10 +752,22 @@ Th `dur` command converts rhythmic notation to durations in seconds based on the
 
     dur -x antoinette.krn | rid -GLId | grep -v '=' | stats
 	
-The estimated duration of this song is 114.988 seconds. Similarly, we can use cat to estimate the dureation of our whole collection:
+Alternatively, we can use the Humdrum extra command `gettime`, which creates an absloute timing spine to indicate the playing time of `**kern` data.  The `-T` option displays the total time that a `**kern score` takes to be performed instead of the attack times of the individual `**kern` lines, and `--simple` option displays the total time values (using the `-T` option) in terms of plain seconds rather than hours:minutes:seconds.
 
-    cat *.krn | dur -x | rid -GLId | grep -v '=' | stats
+    gettime -T --simple antoinette.krn
+    
+We can use the same command to calculate the total duration of a collection of `**kern` files. This time, we'll simply use the `-T` option without the `--simple` flag:
+
+    gettime -T  *.krn
     
+By default, `gettime` will return the performance length of every single song, in addition to the total duration. If we're only interested in total duration, we can use the `tail -n 1` command to only print the last line of the `gettime` output:
+
+    gettime -T  *.krn | tail -n 1
+
+Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now imagine you were writing a script to get the total duration of all the collections of songs you currently have on your computer. Maybe you want to save your information in a CSV format. Ideally, you only want to save the duration it self, and not the whole output. We can use `awk` to filter out the information we want. The `awk` command allows you to define custom field separator using the `-F` option. For this example, we'll define any vertical whitespace (meaning spaces, tabs, carriage returns, and newlines) as our field separator. In `BASH`, the bracket expression `[[:space:]]` can be used to represent any vertical space. In `awk`, the fields are represented by a dollar sign (`$`) followed by the cardinal position of the field. For example, `$1` would print "Total", and `$2` would print "time:". We'll use `$3` to print the duration:
+
+    gettime -T  *.krn | tail -n 1 | awk -F[[:space:]] '{ print $3 }'
+
 
 
 ## <a name="references"></a>4. References
