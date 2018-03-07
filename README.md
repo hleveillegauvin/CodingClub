@@ -20,6 +20,7 @@ leveillegauvin.1@osu.edu
     * [2.3. Using the Spotify API](#using-the-spotify-api)
 * [3. Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
     * [3.1. Basic Pitch Analysis](#basic-pitch-analysis)
+    * [3.2. Basic Rhytmic Analysis](#basic-rhythmic-analysis)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
 
@@ -694,7 +695,7 @@ rm temp_solfa
 rm temp_mint
 ```
 
-### <a name="basic-pitch-analysis"></a>3.1. Basic Rhythm Analysis
+## <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhytmic Analysis
 ---
 
 In the last exercise, we learned how to do basic pitch analysis using the Humdrum Toolkit. In this exercise, we'll be focusing on rhythm. 
