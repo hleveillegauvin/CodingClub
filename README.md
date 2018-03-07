@@ -744,9 +744,51 @@ Perhaps unsurprisingly, all the phrases in this song have a different rhythmic s
 
     cat *.krn | humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' | sed 's/\*\*kern/**recip/' | context -b { -o ^= | humsed 's/[}{]//g' | rid -GLId | sortcount
 
+Another useful command is the Humdrum extra command `beat`. The `beat` command can be used to identify the metrical beat on which a line in a Humdrum `**kern` score occurs. By default, `beat` assumes 4 main beats per measures. This can be overriden using the `-u` option:
+
+     beat nova001.krn
+
+By default, `beat` will output a single `**beat`spine. To append the `**beat` spine the to original `**kern` spine, simply use the `-a` option:
+
+    beat -a -nova001.krn
+    
+Similarly, you can also prepend the `**beat` spine to the original `**kern` spine:
+
+    beat -p -nova001.krn
+    
+Now imagine we were interested in comparing the average length of notes that fall on downbeats. We'll start by using the `dur` command to convert rythmic notation into time in seconds. We'll use the `-T` option to specify the duration in second of a quarter note. The duration we chose is irrelavant, as long as we are consistent. In this example, we'll use 1 second. We'll also use the `-x` option to suppress all non-duration output. Let's save the output of our command as `nova001.dur`:
+
+    dur -T 1 -x nova001.krn > nova001.dur
+    
+Let's now create a beat spine to using the `beat` comand we learned above. We'll need to use the `-n` option to keep all null records, to make sure we can realign our spines properly. Let's save this file as `nova001.beat`:
+
+    beat -n nova001.krn > nova001.beat
+    
+Finally, let's create a `**recip` spine:
+
+    humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/' > nova001.recip
+
+We can assemble our two files using the `assemble` function:
+
+    assemble nova001.beat nova001.dur nova001.recip
+    
+Okay, back to our initial problem. We're only interested in the duration of notes that fall on downbeats. We'll start by using `rid -GLId` to get rid of all non-music data. We'll then get delete all rests. Since the our `**recip` spine is the furthest to the right, we can simply use `grep` to print all lines that do not (`-v`) end (`$`) with `r`. We can then use grep to select only the notes that fall on a down beat. Since our `**beat` spine is the left most, we'll look for lines that start (`^`) with either `1` or `2` (`[1-2]`) (our two downbeats in 2/4), followed by any type of vertical space (`[[:space:]]`): 
+
+    assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2][[:space:]]"
+    
+The only thing left to do is to calculate the mean of the second column. We can use `awk` to filter out the information we want. The `awk` command allows you to define custom field separator using the `-F` option. For this example, we'll define any vertical whitespace (meaning spaces, tabs, carriage returns, and newlines) as our field separator. In `BASH`, the bracket expression `[[:space:]]` can be used to represent any vertical space. In `awk`, the fields are represented by a dollar sign (`$`) followed by the cardinal position of the field. We'll use `$2` to print the second column. We'll then use the `stats` command to get the mean duration:
+
+    assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2][[:space:]]" |  awk -F[[:space:]] '{ print $2 }' | stats
+
+Based on our last command, the mean duration notes falling on a downbeat in this song is 0.693548. Remember that we previously assigned an arbitrary duration of 1 second to a quarter note. This meanse that a quarter note would be 1, an eight note would be 0.5, and that a dotted eight note would be 0.75. So the mean duration of a note falling on a downbeat is a little be shorter than a dotted eight note. Let's now calculate the average duration of upbeat notes in the same piece. The only thing we need to change is our `grep` command. Instead of looking for lines starting with either 1 or 2, we'll look for lines starting with a float (e.g. 1.50):
+
+    assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2].[0-9]*[[:space:]]" |  awk -F[[:space:]] '{ print $2 }' | stats
+
+The mean duration of notes on upbeat is 0.50, meaning that every notes on upbeats are eight notes. It looks like, in this song, notes on upbeats are shorter than notes on downbeats.
+
 Sometimes it can be useful to estimate the duration of a piece based on its tempo. For example, imagine we wanted to record a collection of piano rags by Scott Joplin. Let's start by changing our current working directory:
 
-        cd ~/humdrum-tools/data/joplin/kern ; ls
+    cd ~/humdrum-tools/data/joplin/kern ; ls
 	
 Th `dur` command converts rhythmic notation to durations in seconds based on the tempo of a song. The `-x` option is used to suppress all non-duration output for processed spines. `rid -GLId` eliminates specific Humdrum records: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records. `grep -v '='` eliminates barlines, and `stats` calculates basic statistics on the first column of our output. 
 
