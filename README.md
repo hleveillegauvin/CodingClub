@@ -797,7 +797,7 @@ Th `dur` command converts rhythmic notation to durations in seconds based on the
 
     dur -x antoinette.krn | rid -GLId | grep -v '=' | stats
 	
-Alternatively, we can use the Humdrum extra command `gettime`, which creates an absloute timing spine to indicate the playing time of `**kern` data.  The `-T` option displays the total time that a `**kern score` takes to be performed instead of the attack times of the individual `**kern` lines, and `--simple` option displays the total time values (using the `-T` option) in terms of plain seconds rather than hours:minutes:seconds.
+Alternatively, we can use the Humdrum extra command `gettime`, which creates an absloute timing spine to indicate the playing time of `**kern` data.  The `-T` option displays the total time that a `**kern` score takes to be performed instead of the attack times of the individual `**kern` lines, and `--simple` option displays the total time values (using the `-T` option) in terms of plain seconds rather than hours:minutes:seconds.
 
     gettime -T --simple antoinette.krn
     
