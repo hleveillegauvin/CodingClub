@@ -781,7 +781,7 @@ The only thing left to do is to calculate the mean of the second column. We can 
 
     assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2][[:space:]]" |  awk -F[[:space:]] '{ print $2 }' | stats
 
-Based on our last command, the mean duration notes falling on a downbeat in this song is 0.693548. Remember that we previously assigned an arbitrary duration of 1 second to a quarter note. This meanse that a quarter note would be 1, an eight note would be 0.5, and that a dotted eight note would be 0.75. So the mean duration of a note falling on a downbeat is a little be shorter than a dotted eight note. Let's now calculate the average duration of upbeat notes in the same piece. The only thing we need to change is our `grep` command. Instead of looking for lines starting with either 1 or 2, we'll look for lines starting with a float (e.g. 1.50):
+Based on our last command, the mean duration notes falling on a downbeat in this song is 0.693548. Remember that we previously assigned an arbitrary duration of 1 second to a quarter note. This meanse that a quarter note would be 1, an eight note would be 0.5, and that a dotted eight note would be 0.75. So the mean duration of a note falling on a downbeat is a little be shorter than a dotted eight note. Let's now calculate the average duration of upbeat notes in the same piece. The only thing we need to change is our `grep` command. Instead of looking for lines starting with either 1 or 2, we'll look for lines that include a float (e.g. 1.50):
 
     assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2].[0-9]*[[:space:]]" |  awk -F[[:space:]] '{ print $2 }' | stats
 
