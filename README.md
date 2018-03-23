@@ -106,6 +106,20 @@ echo "$who says, \"$quote\""
 ```
 ### <a name="writing-functions"></a>1.4. Writing Functions
 
+Functions are a useful way to group pieces of code together. This can be especially useful if you plan on reusing the same lines of code often in a script. Let's write a shell script with a single function that prints a greeting message:
+```
+#!/bin/bash 
+
+# Start by defining your function
+function hello() {
+echo "Hello!"
+}
+
+# Then call your function by typing its name
+hello
+```
+
+
 
 ## <a name="using-apis"></a>2. Using APIs
 ### <a name="whos-in-space"></a>2.1. Who's in Space?
