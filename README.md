@@ -725,13 +725,13 @@ One of the things we might be interested in doing is looking for rhythmic patter
     
 Again, let's break down this query:  
 
-  * `humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'` converts `**kern` to `**recip`, as described above.
+  * `humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'` converts `**kern` to `**recip`, as described above.
   
-  * `context -e ^= -o ^=` amalgamates all the data within one measure and prints it on a single line. The `-b ^=` option indicates to begin amalgamating when a line that starts (`^`) with the `=` character (i.e. a barline). The `-o ^=` option indicates that lines starting (`^`) with a `=` character should be omitted (`-o`).
+  * `context -e ^= -o ^=` amalgamates all the data within one measure and prints it on a single line. The `-b ^=` option indicates to begin amalgamating when a line that starts (`^`) with the `=` character (i.e. a barline). The `-o ^=` option indicates that lines starting (`^`) with a `=` character should be omitted (`-o`).
   
   * `rid -GLId` eliminates specific Humdrum records: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records.
   
-  * `sortcount` tabulates the results.
+  * `sortcount` tabulates the results.
   
 Determining the most common rhythmic pattern spanning a single measure is a bit unmusical. Perhaps a more interesting query would be to compare rhythmic patterns spanning musical phrases. In Humdrum, phrases are identified using `{ }`. Currently, phrase markings were deleted from our `**recip` spine. We can change that by modifying our original query:
 
