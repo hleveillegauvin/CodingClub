@@ -14,6 +14,7 @@ leveillegauvin.1@osu.edu
     * [1.1. Saying Hello](#saying-hello)
     * [1.2. Counting Characters](#counting-characters)
     * [1.3. Printing Quotes](#printing-quotes)
+    * [1.4. Writing Functions](#writing-functions)
 * [2. Using APIs](#using-apis)
     * [2.1. Who's in Space?](#whos-in-space)
     * [2.2. Grabbing the Weather](#grabbing-the-weather)
@@ -103,7 +104,7 @@ read -p "What is the quote? " quote
 read -p "Who said it? " who
 echo "$who says, \"$quote\""
 ```
-
+### <a name="writing-functions"></a>1.4. Writing Functions
 
 
 ## <a name="using-apis"></a>2. Using APIs
