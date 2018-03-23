@@ -751,11 +751,11 @@ Another useful command is the Humdrum extra command `beat`. The `beat` command c
 
 By default, `beat` will output a single `**beat`spine. To append the `**beat` spine the to original `**kern` spine, simply use the `-a` option:
 
-    beat -a -nova001.krn
+    beat -a nova001.krn
     
 Similarly, you can also prepend the `**beat` spine to the original `**kern` spine:
 
-    beat -p -nova001.krn
+    beat -p nova001.krn
     
 Now imagine we were interested in comparing the average length of notes that fall on downbeats. We'll start by using the `dur` command to convert rythmic notation into time in seconds. We'll use the `-T` option to specify the duration in second of a quarter note. The duration we chose is irrelavant, as long as we are consistent. In this example, we'll use 1 second. We'll also use the `-x` option to suppress all non-duration output. Let's save the output of our command as `nova001.dur`:
 
