@@ -773,7 +773,7 @@ We can assemble our two files using the `assemble` function:
 
     assemble nova001.beat nova001.dur nova001.recip
     
-Okay, back to our initial problem. We're only interested in the duration of notes that fall on downbeats. We'll start by using `rid -GLId` to get rid of all non-music data. We'll then get delete all rests. Since the our `**recip` spine is the furthest to the right, we can simply use `grep` to print all lines that do not (`-v`) end (`$`) with `r`. We can then use grep to select only the notes that fall on a down beat. Since our `**beat` spine is the left most, we'll look for lines that start (`^`) with either `1` or `2` (`[1-2]`) (our two downbeats in 2/4), followed by any type of vertical space (`[[:space:]]`): 
+Okay, back to our initial problem. We're only interested in the duration of notes that fall on downbeats. We'll start by using `rid -GLId` to get rid of all non-music data. We'll then delete all rests. Since the our `**recip` spine is the furthest to the right, we can simply use `grep` to print all lines that do not (`-v`) end (`$`) with `r`. We can then use grep to select only the notes that fall on a down beat. Since our `**beat` spine is the left most, we'll look for lines that start (`^`) with either `1` or `2` (`[1-2]`) (our two downbeats in 2/4), followed by any type of vertical space (`[[:space:]]`): 
 
     assemble nova001.beat nova001.dur nova001.recip | rid -GLId | grep -v "r$" | grep "^[1-2][[:space:]]"
     
