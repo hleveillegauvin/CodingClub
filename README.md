@@ -757,7 +757,7 @@ Similarly, you can also prepend the `**beat` spine to the original `**kern` spin
 
     beat -p nova001.krn
     
-Now imagine we were interested in comparing the average length of notes that fall on downbeats. We'll start by using the `dur` command to convert rythmic notation into time in seconds. We'll use the `-T` option to specify the duration in second of a quarter note. The duration we choose is irrelavant, as long as we are consistent. In this example, we'll use 1 second. We'll also use the `-x` option to suppress all non-duration output. Let's save the output of our command as `nova001.dur`:
+Now imagine we were interested in comparing the average length of notes that fall on downbeats. We'll start by using the `dur` command to convert rhythmic notation into time in seconds. We'll use the `-T` option to specify the duration in second of a quarter note. The duration we choose is irrelavant, as long as we are consistent. In this example, we'll use 1 second. We'll also use the `-x` option to suppress all non-duration output. Let's save the output of our command as `nova001.dur`:
 
     dur -T 1 -x nova001.krn > nova001.dur
     
