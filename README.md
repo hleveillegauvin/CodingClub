@@ -695,7 +695,7 @@ rm temp_solfa
 rm temp_mint
 ```
 
-### <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhytmic Analysis
+### <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhythmic Analysis
 ---
 
 In the last exercise, we learned how to do basic pitch analysis using the Humdrum Toolkit. In this exercise, we'll be focusing on rhythm. 
@@ -727,7 +727,7 @@ Again, let's break down this query:
 
   * `humsed '/^[^=]/s/[^0-9.r ]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'` converts `**kern` to `**recip`, as described above.
   
-  * `context -e ^= -o ^=` amalgamates all the data within one measure and prints it on a single line. The `-b ^=` option indicates to begin amalgamating when a line that starts (`^`) with the `=` character (i.e. a barline). The `-o ^=` option indicates that lines starting (`^`) with a `=` character should be omitted (`-o`).
+  * `context -b ^= -o ^=` amalgamates all the data within one measure and prints it on a single line. The `-b ^=` option indicates to begin amalgamating when a line that starts (`^`) with the `=` character (i.e. a barline). The `-o ^=` option indicates that lines starting (`^`) with a `=` character should be omitted (`-o`).
   
   * `rid -GLId` eliminates specific Humdrum records: `-G` removes all global comments, `-L` removes all local comments, `-I` removes null local comments, and `-d` removes null data records.
   
