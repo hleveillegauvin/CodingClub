@@ -733,7 +733,7 @@ Again, let's break down this query:
   
   * `sortcount` tabulates the results.
   
-Determining the most common rhythmic pattern spanning a single measure is a bit unnatural. Perhaps a more interesting query would be to compare rhythmic patterns spanning musical phrases. In Humdrum, phrases are identified using `{ }`. Currently, phrase markings were deleted from our `**recip` spine. We can change that by modifying our original query:
+Determining the most common rhythmic pattern spanning a single measure is a bit unmusical. Perhaps a more interesting query would be to compare rhythmic patterns spanning musical phrases. In Humdrum, phrases are identified using `{ }`. Currently, phrase markings were deleted from our `**recip` spine. We can change that by modifying our original query:
 
     humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' nova001.krn | sed 's/\*\*kern/**recip/'
   
@@ -745,7 +745,7 @@ Perhaps unsurprisingly, all the phrases in this song have a different rhythmic s
 
     cat *.krn | humsed '/^[^=]/s/[^0-9.r }{]//g; s/^$/./' | sed 's/\*\*kern/**recip/' | context -b { -o ^= | humsed 's/[}{]//g' | rid -GLId | sortcount
 
-Another useful command is the Humdrum extra command `beat`. The `beat` command can be used to identify the metrical beat on which a line in a Humdrum `**kern` score occurs. By default, `beat` assumes 4 main beats per measures. This can be overriden using the `-u` option:
+Another useful command is the Humdrum extra command `beat`. The `beat` command can be used to identify the metrical beat on which a line in a Humdrum `**kern` score occurs. By default, `beat` assumes that quarter notes (i.e. 4) are the definition of a beat (this can be overriden using the `-u` option):
 
      beat nova001.krn
 
