@@ -105,11 +105,11 @@ read -p "Who said it? " who
 echo "$who says, \"$quote\""
 ```
 ### <a name="writing-functions"></a>1.4. Writing Functions
+---
 
-Functions are a useful way to group pieces of code together. This can be especially useful if you plan on reusing the same lines of code often in a script. Let's write a shell script with a single function that prints a greeting message:
+Functions are a useful way to group pieces of code together. This can be especially useful if you plan on reusing the same lines of code often in a script. Let's write a simple function that prints a greeting message:
+
 ```
-#!/bin/bash 
-
 # Start by defining your function
 function hello() {
 echo "Hello!"
@@ -119,7 +119,179 @@ echo "Hello!"
 hello
 ```
 
+Functions can accept argument. The first argument passed to a function is automatically assigned to the variable `$1`:
 
+```
+function hello() {
+echo "Hello, "$1"!"
+}
+
+hello Hubert
+```
+
+Functions can also be used within a "for loop":
+
+```
+function hello() {
+echo "Hello, "$1"!"
+}
+
+for args in Hubert Andrew Nic Lindsay David Niels
+do
+hello "$args"
+done
+```
+
+Similarly, "for loops" can be used inside a function:
+
+```
+function hello() {
+for args in $1 $2 $3 $4 $5 $6
+do
+echo "Hello, "$args"!"
+done
+}
+
+hello Hubert Andrew Nic Lindsay David Niels
+```
+
+You can also write "if statements" within a function:
+
+```
+function hello() {
+if [[ $1 == "Dr. Huron" ]];
+then
+echo "Hide the beer!"
+else
+echo "Hello, "$1"!"
+fi
+}
+
+for args in Hubert Andrew Nic Lindsay David Niels "Dr. Huron"
+do
+hello "$args"
+done
+```
+
+Obviously, functions can be used within shell scripts:
+
+```
+#!/bin/sh
+
+# Greetings script
+# Written by: Hubert Léveillé Gauvin
+# Date: 23 March 2018
+
+# Create a program that prompts for a list of names and print a specific message based on the name
+
+# Start by defining your function
+function hello() {
+if [[ $1 == "Dr. Huron" ]];
+then
+echo "Hide the beer!"
+else
+echo "Hello, "$1"!"
+fi
+}
+
+# Then write your main script
+read -p "Who's there? " name
+hello $name
+```
+
+You can also call a function within another function. This can be useful to organize longer, more complex scripts into smaller parts:
+
+```
+#!/bin/sh
+
+# Greetings script
+# Written by: Hubert Léveillé Gauvin
+# Date: 23 March 2018
+
+# Create a program that prompts for a list of names and print a specific message based on the name
+
+# Start by defining your function
+function hello() {
+if [[ $1 == "Dr. Huron" ]];
+then
+echo "Hide the beer!"
+else
+echo "Hello, "$1"!"
+fi
+}
+
+# Then create a function for your main script
+function main() {
+read -p "Who's there? " name
+hello $name
+}
+
+# Finally, call your main function
+main
+```
+
+As you write more and more shell scripts, you'll realize that you keep reusing the same functions over and over again. Something that save all your functions in a single shell script, that you can than import evrytime your write a new script. Think of this as your personal "function" package. Let's create a shell script called `bash_functions.sh`:
+
+```
+#!/bin/sh
+
+# Collection of useful functions
+# Written by: Hubert Léveillé Gauvin
+# Date: 23 March 2018
+
+function check_dependency_command() {
+# Check if a unix tool is installed. If not, print error message and exit
+if command -v $1 >/dev/null 2>&1 ; then
+:
+else
+    echo -e "\033[0;31m'$1': command not found.\033[0m"
+    exit
+fi
+}
+
+function lowercase() {
+# Translates string to lowercase only
+tr [:upper:] [:lower:] <<< "$1"
+}
+
+function random_integer_between() {
+# Generates a random number between two numbers. Note: this is not pure bash.
+python -S -c "import random; print random.randint($1,$2)"
+}
+
+function ceil(){
+# Rounds up to next integer (e.g. 2.1 becomes 3)
+awk '{print ($0-int($0)>0)?int($0)+1:int($0)}' <<< "$1"
+}
+
+function floor(){
+# Rounds down to next integer (e.g. 2.9 becomes 2)
+awk '{print int($0)}' <<< "$1"
+}
+```
+
+Let's see how we can import this collection of funtions into a shell script. We'll use the `source` command to do so. If you haven't done so yet, make sure you change the permissions associated with the script we just did: `chmod +x bash_functions.sh`:
+
+```
+#!/bin/sh
+
+# My cool research script
+# Written by: Hubert Léveillé Gauvin
+# Date: 23 March 2018
+
+# Start by sourcing your function script to import its functions
+source bash_functions.sh
+
+# You now have all those new functions available to you
+echo "This is a random number between 1 and 10"
+random_integer_between 1 10
+
+echo "This is the ceil function applied to 2.1"
+ceil 2.1
+
+echo "This is the floor function applied to 2.9"
+floor 2.9
+```
 
 ## <a name="using-apis"></a>2. Using APIs
 ### <a name="whos-in-space"></a>2.1. Who's in Space?
