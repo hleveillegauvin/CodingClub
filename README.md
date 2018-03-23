@@ -701,7 +701,7 @@ rm temp_mint
 In the last exercise, we learned how to do basic pitch analysis using the Humdrum Toolkit. In this exercise, we'll be focusing on rhythm. 
 We'll make use of a small collection of unaccompanied folk songs from Nova Scotia:
 
-    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia; ls
+    cd ~/humdrum-tools/data/songs/unaccompanied/nova-scotia/kern
 
 Rhythmic information in Humdrum is encoded using the `**recip` representation. `**recip` is a subset of the `**kern` representation. The following command can be used to generate a `**recip` spine using a `**kern` spine:
 
