@@ -20,7 +20,7 @@ leveillegauvin.1@osu.edu
     * [2.3. Using the Spotify API](#using-the-spotify-api)
 * [3. Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
     * [3.1. Basic Pitch Analysis](#basic-pitch-analysis)
-    * [3.2. Basic Rhytmic Analysis](#basic-rhythmic-analysis)
+    * [3.2. Basic Rhythmic Analysis](#basic-rhythmic-analysis)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
 
