@@ -1049,6 +1049,17 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
 In one of the very firt issues of MTO, Jon Wild wrote a review of the Humdrum Toolkit. This review included the following sample problem: _In what proportion are leading-tones in Bach chorale melodies approached from beneath, and in what proportion from above?_ In this section we'll loosely follow the instructions given in Wild (1996). First, let's find the Bach chorales that came with the Humdum Toolkit. 
 
     cd ~/humdrum-tools/data/bach-js/371chorales/kern
+    
+We'll start by concatenating all the chorales in our directory into one file called `chorales`:
+
+    cat *.krn > chorales
+    
+For this exercise, we'll assume that the melody is always in the soprano. We can extract the soprano part using `extract -p 4`. The `-p 4` option indicates that we want to extract the fourth (4) spine, which corresponds to the soprano part:
+
+    extract -p 4 chorales > temp1
+    
+    
+
 
 #### Humdrum
   * http://www.humdrum.org/
