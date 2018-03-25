@@ -23,6 +23,7 @@ leveillegauvin.1@osu.edu
 * [3. Using the Humdrum Toolkit](#using-the-humdrum-toolkit)
     * [3.1. Basic Pitch Analysis](#basic-pitch-analysis)
     * [3.2. Basic Rhythmic Analysis](#basic-rhythmic-analysis)
+    * [3.3. A Sample Problem](#humdrum-sample-problem)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
 
@@ -1039,11 +1040,15 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
     gettime -T  *.krn | tail -n 1 | awk -F[[:space:]] '{ print $3 }'
 
 
+### <a name="humdrum-sample-problem"></a>3.3. A Sample Problem
+---
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
 
+In one of the very firt issues of MTO, Jon Wild wrote a review of the Humdrum Toolkit. This review included the following sample problem: _In what proportion are leading-tones in Bach chorale melodies approached from beneath, and in what proportion from above?_ In this section we'll loosely follow the instructions given in Wild (1996). First, let's find the Bach chorales that came with the Humdum Toolkit. 
 
+    cd ~/humdrum-tools/data/bach-js/371chorales/kern
 
 #### Humdrum
   * http://www.humdrum.org/
@@ -1062,36 +1067,3 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
   
 #### Other
   * https://www.datascienceatthecommandline.com/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
