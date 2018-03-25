@@ -30,8 +30,6 @@ leveillegauvin.1@osu.edu
 
 The shell is a command line user interface for UNIX.
 
-![unix-system](https://github.com/hleveillegauvin/CodingClub/blob/master/773a8c98-5f66-4ac7-92d8-805fa7049561_text_hi.gif)
-
 When you open your terminal, the shell should start you in your home directory. You can find out the name of your current directory by typing:
 
     pwd
