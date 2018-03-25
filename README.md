@@ -10,6 +10,7 @@ leveillegauvin.1@osu.edu
 
 # Table of Contents
 
+* [0. The Shell -- A Primer](#shell-primer)
 * [1. Writing Shell Scripts](#writing-shell-scripts)
     * [1.1. Saying Hello](#saying-hello)
     * [1.2. Counting Characters](#counting-characters)
@@ -24,6 +25,12 @@ leveillegauvin.1@osu.edu
     * [3.2. Basic Rhythmic Analysis](#basic-rhythmic-analysis)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
+
+## <a name="shell-primer"></a> 0. The Shell -- A Primer
+
+The shell is a command line user interface for UNIX.
+
+
 
 ## <a name="writing-shell-scripts"></a>1. Writing Shell Scripts
 
