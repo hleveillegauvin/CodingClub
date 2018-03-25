@@ -32,6 +32,39 @@ The shell is a command line user interface for UNIX.
 
 ![unix-system](https://github.com/hleveillegauvin/CodingClub/blob/master/773a8c98-5f66-4ac7-92d8-805fa7049561_text_hi.gif)
 
+When you open your terminal, the shell should start you in your home directory. You can find out the name of your current directory by typing:
+
+    pwd
+
+You can use `ls` to list all the files and the directories of the directory you’re in:
+
+    ls
+    
+The `cd` (change directory) command to navigate the shell. To move to a specic directory, type `cd` 
+plus the name of the directory:
+
+    cd Desktop
+
+To move back to the parent dirctory, type:
+
+    cd ..
+    
+If you simply type `cd` by itself, you'll can go back to your home directory:
+
+    cd
+    
+Similarly, the `~` character is a shortcut to your home directory. So if you want to go to, say, your desktop from anywhere, simply type:
+
+    cd ~/Desktop
+    
+You can view files using the `cat` command:
+
+    cat myfile.txt
+    
+the `|`symbol is used to pipe the output of one command into another command. For example, we can list all the files and directories in our current directory using `ls` and then count the number of files using the `wc -l`(word count) command:
+
+    ls | wc -l
+
 ## <a name="writing-shell-scripts"></a>1. Writing Shell Scripts
 
 In this section, we'll learn how to write shell scripts through a series of short exercises lifted from the book [Exercises for Programmers: 57 Challenges to Develop Your Coding Skills](https://www.amazon.com/Exercises-Programmers-Challenges-Develop-Coding/dp/1680501224/ref=sr_1_1?ie=UTF8&qid=1519245259&sr=8-1&keywords=exercises+for+programmers). 
