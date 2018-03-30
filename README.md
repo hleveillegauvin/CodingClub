@@ -8,8 +8,7 @@ Cognitive and Systematic Musicology Laboratory, Ohio State University
 Written by Hubert Léveillé Gauvin  
 leveillegauvin.1@osu.edu
 
-# Table of Contents
-
+# <a name="table-of-contents"></a> Table of Contents
 * [0. The Shell -- A Primer](#shell-primer)
 * [1. Writing Shell Scripts](#writing-shell-scripts)
     * [1.1. Saying Hello](#saying-hello)
@@ -63,6 +62,8 @@ You can view files using the `cat` command:
 the `|`symbol is used to pipe the output of one command into another command. For example, we can list all the files and directories in our current directory using `ls` and then count the number of files using the `wc -l`(word count) command:
 
     ls | wc -l
+ 
+[Back to table of contents](#table-of-contents)
 
 ## <a name="writing-shell-scripts"></a>1. Writing Shell Scripts
 
@@ -90,6 +91,7 @@ We'll use the `read -p` command to prompt a user response. The response will be 
 read -p "What is your name? " name
 echo "Hello, $name, nice to meet you!"
 ```
+[Back to table of contents](#table-of-contents)
 
 ### <a name="counting-characters"></a>1.2. Counting Characters
 ---
@@ -121,6 +123,8 @@ do
 
 done
 ``` 
+
+[Back to table of contents](#table-of-contents)
 
 ### <a name="printing-quotes"></a>1.3. Printing Quotes
 ---
@@ -334,6 +338,8 @@ echo "This is the floor function applied to 2.9"
 floor 2.9
 ```
 
+[Back to table of contents](#table-of-contents)
+
 ## <a name="using-apis"></a>2. Using APIs
 ### <a name="whos-in-space"></a>2.1. Who's in Space?
 ---
@@ -423,6 +429,8 @@ table:
 Of course, `csvlook` can also open local files:
 
     csvlook whosinspace.csv
+    
+[Back to table of contents](#table-of-contents)
 
 ### <a name="grabbing-the-weather"></a>2.2. Grabbing the Weather
 ---
@@ -550,6 +558,8 @@ It works! We can now translate our weather tweet to French:
     echo "The weather is currently "$current_temp"C in Paris, Ontario. "$description". Temperatures are expected to climb up to "$temp_max"C." | translate -to "French" -b
     
 __Note: The Google Translate engine is getting pretty good, but it’s still not perfect. It works ok for this demo, but if we were to implement an actual Twitter bot, we would probably want the text to be translated by a human.__
+
+[Back to table of contents](#table-of-contents)
 
 ### <a name="using-the-spotify-api"></a>2.3. Using the Spotify API
 ---
@@ -772,6 +782,8 @@ We can do the same thing for mode (where 1 is major and 0 is minor):
 And of course, we can create a `CSV` file that combines both:
 
     curl -s "https://api.spotify.com/v1/audio-features?ids=$list_IDs" -H "Authorization: Bearer $token" | jq -r '.audio_features[] | [.mode, .tempo] | @csv'
+    
+[Back to table of contents](#table-of-contents)
   
 ## <a name="using-the-humdrum-toolkit"></a>3. Using the Humdrum Toolkit
 ### <a name="basic-pitch-analysis"></a>3.1. Basic Pitch Analysis
@@ -923,6 +935,8 @@ rm temp_solfa
 rm temp_mint
 ```
 
+[Back to table of contents](#table-of-contents)
+
 ### <a name="basic-rhythmic-analysis"></a>3.2. Basic Rhythmic Analysis
 ---
 
@@ -1041,6 +1055,7 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
 
     gettime -T  *.krn | tail -n 1 | awk -F[[:space:]] '{ print $3 }'
 
+[Back to table of contents](#table-of-contents)
 
 ### <a name="humdrum-sample-problem"></a>3.3. A Sample Problem
 ---
@@ -1076,11 +1091,11 @@ Notice that some token have a minus sign (`-`) to their right. These represent l
 Finally, we'll use `sortcount -p` to calculate the percentage of leading tones approached from above and the percentage of leading tones approached from below:
  
     cat *.krn | extract -p 4 | sed 's/:.*/:/' | deg | grep ^[v^]7 | grep -v [-] | sortcount -p
+    
+[Back to table of contents](#table-of-contents)
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
-
-
 
 #### Humdrum
   * http://www.humdrum.org/
@@ -1100,3 +1115,5 @@ Finally, we'll use `sortcount -p` to calculate the percentage of leading tones a
   
 #### Other
   * https://www.datascienceatthecommandline.com/
+  
+[Back to table of contents](#table-of-contents)
