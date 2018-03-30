@@ -236,7 +236,8 @@ fi
 # Then write your main script
 read -p "Who's there? " name
 hello "$name"
-```
+``` 
+__Note: This will only work if you type Dr. Huron without " ".__
 
 You can also call a function within another function. This can be useful to organize longer, more complex scripts into smaller parts:
 
@@ -268,6 +269,7 @@ hello "$name"
 # Finally, call your main function
 main
 ```
+__Note: This will only work if you type Dr. Huron without " ".__
 
 As you write more and more shell scripts, you'll realize that you keep reusing the same functions over and over again. Something that save all your functions in a single shell script, that you can than import evrytime your write a new script. Think of this as your personal "function" package. Let's create a shell script called `bash_functions.sh`:
 
