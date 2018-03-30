@@ -1043,9 +1043,6 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
 ### <a name="humdrum-sample-problem"></a>3.3. A Sample Problem
 ---
 
-## <a name="references"></a>4. References
-### <a name="online-resources"></a>4.1. Online Resources
-
 In one of the [very firt issues of MTO, Jon Wild](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html) wrote a review of the Humdrum Toolkit. This review included the following sample problem: _In what proportion are leading-tones in Bach chorale melodies approached from beneath, and in what proportion from above?_ In this section we'll loosely follow the instructions given in [Wild (1996)](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html). First, let's find the Bach chorales that came with the Humdum Toolkit. 
 
     cd ~/humdrum-tools/data/bach-js/371chorales/kern
@@ -1060,7 +1057,7 @@ For this exercise, we'll assume that the melody is always in the soprano. We can
     
 We'll then use the `deg` command to convert pitches into scale degrees based on the key info encoded in each file. For minor-mode pieces, the minor harmonic scale is assumed, such that, in C minor, A-flat will be represented as `6 `, B-flat as `7-`, and B natural as `7`. `deg` makes use of the key indication encoded in each file to translate pitches into scale degrees. Let's Look at all the key indications in our concatenated file to make sure that everything looks fine:
 
-    cat *.krn | extract -p 4 | grep \*.*: temp1
+    cat *.krn | extract -p 4 | grep \*.*: 
     
 Mmmm. Looks like some key signatures were encoded according to modes rather than major/minor. Since this is not "standard" Humdrum practice, it will make the `deg` command stop abruptly. To make sure this doesn't happen, we can get rid of these modal indications using `sed`. We'll then pipe the `sed` output to `deg`:
 
@@ -1077,6 +1074,11 @@ Notice that some token have a minus sign (`-`) to their right. These represent l
 Finally, we'll use `sortcount -p` to calculate the percentage of leading tones approached from above and the percentage of leading tones approached from below:
  
     cat *.krn | extract -p 4 | sed 's/:.*/:/' | deg | grep ^[v^]7 | grep -v [-] | sortcount -p
+
+## <a name="references"></a>4. References
+### <a name="online-resources"></a>4.1. Online Resources
+
+
 
 #### Humdrum
   * http://www.humdrum.org/
