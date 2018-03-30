@@ -150,7 +150,7 @@ Functions are a useful way to group pieces of code together. This can be especia
 
 ```
 # Start by defining your function
-function hello() {
+hello() {
 echo "Hello!"
 }
 
@@ -161,7 +161,7 @@ hello
 Functions can accept argument. The first argument passed to a function is automatically assigned to the variable `$1`:
 
 ```
-function hello() {
+hello() {
 echo "Hello, "$1"!"
 }
 
@@ -171,7 +171,7 @@ hello Hubert
 Functions can also be used within a "for loop":
 
 ```
-function hello() {
+hello() {
 echo "Hello, "$1"!"
 }
 
@@ -184,7 +184,7 @@ done
 Similarly, "for loops" can be used inside a function:
 
 ```
-function hello() {
+hello() {
 for args in $1 $2 $3 $4 $5 $6
 do
 echo "Hello, "$args"!"
@@ -197,7 +197,7 @@ hello Hubert Andrew Nic Lindsay David Niels
 You can also write "if statements" within a function:
 
 ```
-function hello() {
+hello() {
 if [[ $1 == "Dr. Huron" ]];
 then
 echo "Hide the beer!"
@@ -224,7 +224,7 @@ Obviously, functions can be used within shell scripts:
 # Create a program that prompts for a list of names and print a specific message based on the name
 
 # Start by defining your function
-function hello() {
+hello() {
 if [[ "$1" == "Dr. Huron" ]];
 then
 echo "Hide the beer!"
@@ -250,7 +250,7 @@ You can also call a function within another function. This can be useful to orga
 # Create a program that prompts for a list of names and print a specific message based on the name
 
 # Start by defining your function
-function hello() {
+hello() {
 if [[ "$1" == "Dr. Huron" ]];
 then
 echo "Hide the beer!"
@@ -260,7 +260,7 @@ fi
 }
 
 # Then create a function for your main script
-function main() {
+main() {
 read -p "Who's there? " name
 hello "$name"
 }
@@ -278,7 +278,7 @@ As you write more and more shell scripts, you'll realize that you keep reusing t
 # Written by: Hubert Léveillé Gauvin
 # Date: 23 March 2018
 
-function check_dependency_command() {
+check_dependency_command() {
 # Check if a unix tool is installed. If not, print error message and exit
 if command -v $1 >/dev/null 2>&1 ; then
 :
@@ -288,22 +288,22 @@ else
 fi
 }
 
-function lowercase() {
+lowercase() {
 # Translates string to lowercase only
 tr [:upper:] [:lower:] <<< "$1"
 }
 
-function random_integer_between() {
+random_integer_between() {
 # Generates a random number between two numbers. Note: this is not pure bash.
 python -S -c "import random; print random.randint($1,$2)"
 }
 
-function ceil(){
+ceil(){
 # Rounds up to next integer (e.g. 2.1 becomes 3)
 awk '{print ($0-int($0)>0)?int($0)+1:int($0)}' <<< "$1"
 }
 
-function floor(){
+floor(){
 # Rounds down to next integer (e.g. 2.9 becomes 2)
 awk '{print int($0)}' <<< "$1"
 }
