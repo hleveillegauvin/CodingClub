@@ -215,7 +215,7 @@ done
 Obviously, functions can be used within shell scripts:
 
 ```
-#!/bin/sh
+#!/bin/bash
 
 # Greetings script
 # Written by: Hubert Léveillé Gauvin
@@ -225,7 +225,7 @@ Obviously, functions can be used within shell scripts:
 
 # Start by defining your function
 function hello() {
-if [[ $1 == "Dr. Huron" ]];
+if [[ "$1" == "Dr. Huron" ]];
 then
 echo "Hide the beer!"
 else
@@ -235,13 +235,13 @@ fi
 
 # Then write your main script
 read -p "Who's there? " name
-hello $name
+hello "$name"
 ```
 
 You can also call a function within another function. This can be useful to organize longer, more complex scripts into smaller parts:
 
 ```
-#!/bin/sh
+#!/bin/bash
 
 # Greetings script
 # Written by: Hubert Léveillé Gauvin
@@ -251,7 +251,7 @@ You can also call a function within another function. This can be useful to orga
 
 # Start by defining your function
 function hello() {
-if [[ $1 == "Dr. Huron" ]];
+if [[ "$1" == "Dr. Huron" ]];
 then
 echo "Hide the beer!"
 else
@@ -262,7 +262,7 @@ fi
 # Then create a function for your main script
 function main() {
 read -p "Who's there? " name
-hello $name
+hello "$name"
 }
 
 # Finally, call your main function
