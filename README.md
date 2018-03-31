@@ -59,7 +59,7 @@ You can view files using the `cat` command:
 
     cat myfile.txt
     
-the `|`symbol is used to pipe the output of one command into another command. For example, we can list all the files and directories in our current directory using `ls` and then count the number of files using the `wc -l`(word count) command:
+The `|`symbol is used to pipe the output of one command into another command. For example, we can list all the files and directories in our current directory using `ls` and then count the number of files using the `wc -l`(word count) command:
 
     ls | wc -l
  
