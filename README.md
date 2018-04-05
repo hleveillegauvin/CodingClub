@@ -22,6 +22,7 @@ leveillegauvin.1@osu.edu
     * [3.1. Basic Pitch Analysis](#basic-pitch-analysis)
     * [3.2. Basic Rhythmic Analysis](#basic-rhythmic-analysis)
     * [3.3. A Sample Problem](#humdrum-sample-problem)
+    * [3.4. Converting MIDI and MusicXML files into Humdrum files](#converting-midi-musicxml)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
 
@@ -1093,8 +1094,26 @@ Finally, we'll use `sortcount -p` to calculate the percentage of leading tones a
     
 [Back to table of contents](#table-of-contents)
 
+### <a name="converting-midi-musicxml"></a>3.4. Converting MIDI and MusicXML files into Humdrum files
+---
+
+So far, we have been working primarily with files that were already encoded in the Humdrum syntax. But most of the times, files are encoded in another format such as MIDI or MusicXML. Fortunately, the Humdrum Extra package offers some tools to easily convert those formats into Humdrum files. For this exercise, we'll make use of a famous collection of solo transcriptions by Charlie Parker know as the "Omnibook." The Charlie Parker Omnibook is published by Hal Leonard, but has been digitally encoded by Déguernel, Vincent, and Assayag (2016) (see full reference at the end of this section). Let's start by changing our working directory:
+
+    cd ~/humdrum-tools/data
+    
+Next, let's download our new dataset from the following website: https://members.loria.fr/KDeguernel/omnibook/.  We'll use the `curl` command to download the whole dataset.
+
+    curl https://nuage.ircam.fr/index.php/s/YPL9HA36Qki2vQS/download -L -o Omnibook.zip
+
+__Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
+Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
+in Proceedings of the 13th Sound and Music Computing Conference, 2016.
+
+[Back to table of contents](#table-of-contents)
+
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
+---
 
 #### Humdrum
   * http://www.humdrum.org/
