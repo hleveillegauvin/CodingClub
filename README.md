@@ -2,6 +2,8 @@
 
 <!-- ![coding-club](https://github.com/hleveillegauvin/CodingClub/blob/master/images/musiccognition-451x266.jpg-01.svg) -->
 
+![coding-club]({{ https://github.com/hleveillegauvin/CodingClub }}/assets/header.svg)
+
 Cognitive and Systematic Musicology Laboratory, Ohio State University
 
 Written by Hubert Léveillé Gauvin  
