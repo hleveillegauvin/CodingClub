@@ -1115,6 +1115,9 @@ The dataset comes with a file called READ_ME.txt. Let's have a look at it:
 
     cat READ_ME.txt
     
+It looks like the dataset contains a PDF of every 50 solos, a MIDI file, a MuseScore file, and a MusicXML file. This is a perfect dataset to learn how to convert into Humdrum! 
+
+Arguably the most important technological development of the last 50 years in music encoding is the development and adoption of the Music Instrument Digital Interface (MIDI). MIDI is a real-time protocol designed to share music-related information between hardware devices. MIDI was eventually adopted by the MIDI Manufacturer’s Association, a non-profit association of companies developing products using the MIDI protocol. This commercial support makes the MIDI format one of the most popular format available. But since the MIDI format was designed for machine-to-machine communication, its application for research and music publishing can be problematic (see discussion on this topic in my essay: “Issues and Prospects in Computational Musicology”).
 
 __Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
 Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
