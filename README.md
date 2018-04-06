@@ -1101,9 +1101,20 @@ So far, we have been working primarily with files that were already encoded in t
 
     cd ~/humdrum-tools/data
     
-Next, let's download our new dataset from the following website: https://members.loria.fr/KDeguernel/omnibook/.  We'll use the `curl` command to download the whole dataset.
+Next, let's download our new dataset from the following website: https://members.loria.fr/KDeguernel/omnibook/.  We'll use the `curl` command to download the whole dataset. The `-L` option is used in case there is a redirect found, and the `-o` option is used to create your own filename. Since this is a `.zip` file, we'll  use `unzip` to extract the data. The `-o` option is used to overwrite existing files (if needed) and the `-qq` option stands for "(even more) quiet", which performs operations quietly. We'll then remove the original zipped file using `rm`. Finally, we'll use `mv` to rename our directory as "parker" to be consistent with the other directories.
 
     curl https://nuage.ircam.fr/index.php/s/YPL9HA36Qki2vQS/download -L -o Omnibook.zip
+    unzip -o -qq Omnibook.zip && rm Omnibook.zip
+    mv Omnibook parker
+
+Let's have a look at the dataset we downloaded:
+
+    cd parker; ls
+    
+The dataset comes with a file called READ_ME.txt. Let's have a look at it:
+
+    cat READ_ME.txt
+    
 
 __Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
 Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
