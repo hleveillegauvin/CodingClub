@@ -2,7 +2,7 @@
 
 <!-- ![coding-club](https://github.com/hleveillegauvin/CodingClub/blob/master/images/musiccognition-451x266.jpg-01.svg) -->
 
-![coding-club]({{ https://github.com/hleveillegauvin/CodingClub }}/assets/header.svg)
+![coding-club]({{site.url}}{{site.baseurl}}/_assets/_img/header.svg)
 
 Cognitive and Systematic Musicology Laboratory, Ohio State University
 
