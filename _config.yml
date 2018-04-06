@@ -1,4 +1,5 @@
 theme: jekyll-theme-minimal
-
+baseurl: "/CodingCLub"
+url: "http://hleveillegauvin.github.io" 
 include:
   - "_img"
