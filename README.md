@@ -1115,9 +1115,32 @@ The dataset comes with a file called READ_ME.txt. Let's have a look at it:
 
     cat READ_ME.txt
     
-It looks like the dataset contains a PDF of every 50 solos, a MIDI file, a MuseScore file, and a MusicXML file. This is a perfect dataset to learn how to convert into Humdrum! 
+It looks like the dataset contains a PDF of every 50 solos, a MIDI file, a MuseScore file, and a MusicXML file. This is a perfect dataset to learn how to convert files into Humdrum! 
 
-Arguably the most important technological development of the last 50 years in music encoding is the development and adoption of the Music Instrument Digital Interface (MIDI). MIDI is a real-time protocol designed to share music-related information between hardware devices. MIDI was eventually adopted by the MIDI Manufacturer’s Association, a non-profit association of companies developing products using the MIDI protocol. This commercial support makes the MIDI format one of the most popular format available. But since the MIDI format was designed for machine-to-machine communication, its application for research and music publishing can be problematic (see discussion on this topic in my essay: “Issues and Prospects in Computational Musicology”).
+When many formats are available like in this case, the safest way is to work from MusicXML. MusicXML was designed as an interchange format for music notation, performance, analysis, and retrieval applications. Its creator Michael Good was inspired by the MuseData and Humdrum syntax, but favored a hierarchical representation (XML) rather than a two-dimension representation. key to the MusicXML success is its adoption as an interchange format by notation programs such as Finale, Sibelius and LilyPond, music scanning applications such as SharpEye and SmartScore, and sequencers such as Cubase.
+
+The Humdrum Extra command `xml2hum` was created to convert MusicXML files into Humdrum files. Let's try it on a single file:
+
+    xml2hum MusicXml/Donna_Lee.xml
+    
+It looks like it worked! If you want to manually verify the file, you can copy and past the newly created Humdrum file in the online Verovio Viewer: http://verovio.humdrum.org/
+
+Another popular file format is MIDI. MIDI (Music Instrument Digital Interface) is a real-time protocol designed to share music-related information between hardware devices. Created in the 1980s, MIDI was eventually adopted by the MIDI Manufacturer’s Association, a non-profit association of companies developing products using the MIDI protocol. This commercial support makes the MIDI format one of the most popular format available. But since the MIDI format was designed for machine-to-machine communication, its application for research and music publishing can be problematic. While there is a `mid2hum` command included in the Humdrum Extras toolkit, its use should probably be avoided. To quote Craig Sapp's note: "MIDI to notation (such as Humdrum) is a bit of an open-ended problem." The most robust solution right now to convert MIDI files into Humdrum files is to first convert them into MusicXML files, and then convert them into Humdrum using `xml2hum`. First, import a MIDI file into a notation software (e.g. Finale or Sibelius). Then, export the music to MusicXML. 
+
+Alternatively, some music notation softwares such as MuseScore can be used direclty in the terminal. If MuseScore 2 is already installed on your machine, you can create an alias to allow for system wide use:
+
+```
+echo "alias mscore='/Applications/MuseScore\ 2.app/Contents/MacOS/mscore'" >> ~/.bash_profile
+source ~/.bash_profile
+```
+
+__Note: You might have to adapt the syntax above depending on where MuseScore in installed on your computer.
+
+You can test whether it worked using `mscore -v`. If MuseScore is properly installed and your alias works, you should see something like this: MuseScore2 2.2.1. Once this works, you can use the following syntax to convert MIDI files into MusicXML directly from the terminal. The `-o` option is used to specify the name of the output file. By using the `.xml` extension, the `mscore` command will automatically convert the input file into a MusicXML file:
+
+    mscore Donna_Lee.mid -o Donna_Lee.xml
+    
+Once this is done, you can convert the MusicXML file into Humdrum using `xml2hum` as described above. We can use the same method to convert MuseScore files (`.mscz`) into Humdrum files.
 
 __Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
 Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
