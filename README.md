@@ -1153,7 +1153,7 @@ omnibook(){
 
 kernfilename=$(sed 's/xml/krn/g' <<< "$1")
 songname=$(sed 's/.krn//g' <<< $kernfilename | sed 's/_/\ /g')
-todaydate=$(date +'%Y/%m/%d')
+todaydate=$(date +'%Y-%m-%d')
 
 xml2hum $1 > temp
 
@@ -1214,7 +1214,7 @@ for i in ./MusicXml/*.xml
 do
 omnibook $i
 done
-mv *.krn ./Kern
+mv ./MusicXml/*.krn ./Kern
 ```
 
 
