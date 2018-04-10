@@ -1180,6 +1180,7 @@ rm temp temp2 temp3
 ```
 Let's first try our new function. We'll call the function using `omnibook` followed by the `.xml` file we want to convert into Humdrum. We'll then look at our newly created `.krn` file using `cat`:
 
+    cd MusicXml
     omnibook Donna_Lee.xml
     cat Donna_Lee.krn
 
