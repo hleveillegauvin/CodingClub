@@ -1214,6 +1214,7 @@ for i in ./MusicXml/*.xml
 do
 omnibook $i
 done
+mv *.krn ./Kern
 ```
 
 
