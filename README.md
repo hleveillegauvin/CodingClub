@@ -1142,6 +1142,80 @@ You can test whether it worked using `mscore -v`. If MuseScore is properly insta
     
 Once this is done, you can convert the MusicXML file into Humdrum using `xml2hum` as described above. We can use the same method to convert MuseScore files (`.mscz`) into Humdrum files.
 
+Now that we know that our best option is to use `xml2hum`, let's have a closer look at the file we created:
+
+    xml2hum MusicXml/Donna_Lee.xml
+    
+If we want to convert the whole dataset to Humdrum, we should probably change a couple of things. For example, it would be nice if we included the name of the song and the the name of the artist as reference records. We probably also wnat to add other comments, such as link to the original dataset, an indication that the file was created automatically using `xml2hum`, the name of the encoder and the date de file was created. Finally, we might want to specify that this was played on the alto sax, and that the alto sax is a transposing instrument. We could write a shell script to do all this, but since we are now unix gurus, let's just do it all using a function. Maybe something like this:
+
+```
+omnibook(){
+
+kernfilename=$(sed 's/xml/krn/g' <<< "$1")
+songname=$(sed 's/.krn//g' <<< $kernfilename | sed 's/_/\ /g')
+todaydate=$(date +'%Y/%m/%d')
+
+xml2hum $1 > temp
+
+sed 's/I\"Piano/IsaxA/g' temp > temp2
+sed '/IsaxA/a\
+\*ITrd5c9 \
+' temp2  > temp3
+
+echo '!!!'"OTL: $songname" > "$kernfilename"
+echo '!!!'"OAT: Charlie Parker" >> "$kernfilename"
+
+cat temp3 >> "$kernfilename"
+
+echo '!!'"Based on the Charlie Parker's Omnibook Data (Deguernel, Vincent & Assayag, 2016)" >> "$kernfilename"
+echo '!!Automatically converted from MusicXML into Humdrum using xml2hum' >> "$kernfilename"
+echo '!!Original copyrights held by Atlantic Music Corp.' >> "$kernfilename"
+echo '!!For more information about the original dataset: https://members.loria.fr/KDeguernel/omnibook/' >> "$kernfilename"
+echo '!!!'"ENC: Hubert Leveille Gauvin" >> "$kernfilename"
+echo '!!!'"END: $todaydate" >> "$kernfilename"
+
+rm temp temp2 temp3
+
+}
+```
+Let's first try our new function. We'll call the function using `omnibook` followed by the `.xml` file we want to convert into Humdrum. We'll then look at our newly created `.krn` file using `cat`:
+
+    omnibook Donna_Lee.xml
+    cat Donna_Lee.krn
+
+Hey it worked! Let's break down the function into small bits and see how it works. `kernfilename=$(sed 's/xml/krn/g' <<< "$1")` creates a variable called `kernfilename` based on the name of our intput file (stored under the variable `$1`). We'll use this variable to name our newly created file. We're using `sed` to change the file extension from `.xml` to `.krn`. By default, `sed` expects a file, not a string of character. However, we can force `sed` to read the input as a string using `<<<`. `songname=$(sed 's/.krn//g' <<< $kernfilename | sed 's/_/\ /g')` creates a variable for the name of the song. We'll use this variable insider our Humdrum file. We're using `sed` to modify the variable `kernfilename`. Specifically, we'll remove the `.krn` part of the string, and we'll change underscores (\_) to spaces ( ). Finally, `todaydate=$(date +'%Y-%m-%d')` uses the unix `date` command to print today's date. We'll follow the ISO 8601 standard and format the date as YYYY-MM-DD. As I'm sure you all know, [this is __the__ correct way to write numeric dates](https://xkcd.com/1179/).
+
+We're now ready to convert our file using `xml2hum $1 > temp`. We'll save it as a temporary file called `temp`. We'll then use `sed 's/I\"Piano/IsaxA/g' temp > temp2` to change the instrumentation from piano to alto saxe (following the [Humdrum Instrumentation Codes](https://musiccog.ohio-state.edu/Humdrum/guide.append2.html)).  We'll save this new file as `temp2`. We'll then indicate that the alto sax is a transposing instrument. Transposing instruments are represented at concert pitch with a tandem interpretation indicating the nature of the transposition. The standard tandem interpretation for the Eb alto sax is ` *ITrd5c9` ([see Humdrum Reference Manual -- Section 3 for details on transposition designators](http://ccarh.org/publications/manuals/humdrumreference/hr1995-section3.pdf)). We're using `sed` to append (`a\`) a new line after a specific pattern, and we're saving our modified file as `temp3`. Specifically:
+
+```
+sed '/match string/  a\
+string \			# newline here
+' ./inputfile > ./outputfile	# newline here
+```
+
+We're now ready to create assmeble our new file. `echo '!!!'"OTL: $songname" > "$kernfilename"` prints the record indicator `!!!OTL:` (Original Title) followed by the variable `kernfilename`. Notice two things: 
+
+1) we're using `' '` to enclose the `!` character, but `" "` to enclose the rest (including variables). This is because `!` is a special character, and because [different quotes have different meanings](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash). This is a topic too complicated to be discussed here, but a rule of thumb is that `' '` preserve the literal value of each character whereas `" "` allow for shell expansions (such variables). 
+
+2) We're using `>` to create the file (as opposed to `>>` later on). `>` overides any existing file with the same name, while `>>` simply appends more things at the end of a file. Using `>` at the beginning gives us a garantee that we are starting from scratch everytime.
+
+Once this is done, we'll add our modified append our modified Humdrum file using `cat temp3 >> "$kernfilename"` Finally, we'll add more comments at the end of the file, and we'll delete the temporary files we created.
+
+Once this is done, we're ready to convert the whole thing. Let's make sure we're in the main directory (i.e. `parker`) and let's create a `Kern` directory using `mkdir`:
+
+    cd ~/humdrum-tools/data/parker
+    mkdir Kern
+    
+Finally, we'll create a for loop to convert all the `.xml` files in the `MusixXml` directory:
+
+```
+for i in ./MusicXml/*.xml
+do
+omnibook $i
+done
+```
+
+
 __Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
 Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
 in Proceedings of the 13th Sound and Music Computing Conference, 2016.
