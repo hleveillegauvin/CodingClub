@@ -1060,7 +1060,7 @@ Currently, our output looks like this: `Total time:	1:38:00.962881 hours`. Now i
 ### <a name="humdrum-sample-problem"></a>3.3. A Sample Problem
 ---
 
-In one of the [very firt issues of MTO, Jon Wild](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html) wrote a review of the Humdrum Toolkit. This review included the following sample problem: _In what proportion are leading-tones in Bach chorale melodies approached from beneath, and in what proportion from above?_ In this section we'll loosely follow the instructions given in [Wild (1996)](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html). First, let's find the Bach chorales that came with the Humdum Toolkit. 
+In one of the [very first issues of MTO, Jon Wild](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html) wrote a review of the Humdrum Toolkit. This review included the following sample problem: _In what proportion are leading-tones in Bach chorale melodies approached from beneath, and in what proportion from above?_ In this section we'll loosely follow the instructions given in [Wild (1996)](http://www.mtosmt.org/issues/mto.96.2.7/mto.96.2.7.wild.html). First, let's find the Bach chorales that came with the Humdum Toolkit. 
 
     cd ~/humdrum-tools/data/bach-js/371chorales/kern
     
