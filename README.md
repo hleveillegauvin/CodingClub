@@ -1210,10 +1210,12 @@ Once this is done, we're ready to convert the whole thing. Let's make sure we're
 Finally, we'll create a for loop to convert all the `.xml` files in the `MusixXml` directory:
 
 ```
-for i in ./MusicXml/*.xml
+cd MusicXml
+for i in *.xml
 do
 omnibook $i
 done
+cd ..
 mv ./MusicXml/*.krn ./Kern
 ```
 
