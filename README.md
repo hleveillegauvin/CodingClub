@@ -23,6 +23,7 @@ leveillegauvin.1@osu.edu
     * [3.2. Basic Rhythmic Analysis](#basic-rhythmic-analysis)
     * [3.3. A Sample Problem](#humdrum-sample-problem)
     * [3.4. Converting MIDI and MusicXML files into Humdrum files](#converting-midi-musicxml)
+    * [3.5 Coding Day -- Spring 2018](#codingdayS2018)
 * [4. References](#references)
     * [4.1. Online Resources](#online-resources)
 
@@ -1219,10 +1220,20 @@ cd ..
 mv ./MusicXml/*.krn ./Kern
 ```
 
-
 __Reference:__ Ken Déguernel, Emmanuel Vincent, and Gérard Assayag.
 Using Multidimensional Sequences for Improvisation in the OMax Paradigm,
 in Proceedings of the 13th Sound and Music Computing Conference, 2016.
+
+[Back to table of contents](#table-of-contents)
+
+### <a name="codingday2018"></a>3.5. Coding Day -- Spring 2018
+---
+
+Congratulations! You have been hired by BigShot Music Publishing to work as a consultant on their new jazz trumpet book. The publisher has selected 7 trumpet solos to be included in this new book. As a consultant, your job is as follows:
+
+* The solos must be organized by level of difficulty, such that the easiest solo will appear first in the book.
+* Fingerings must be added to each solo.
+* Reference information must be retrieved from each solo
 
 [Back to table of contents](#table-of-contents)
 
