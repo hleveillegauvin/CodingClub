@@ -1229,14 +1229,6 @@ in Proceedings of the 13th Sound and Music Computing Conference, 2016.
 ### <a name="codingday2018"></a>3.5. Coding Day -- Spring 2018
 ---
 
-Congratulations! You have been hired by BigShot Music Publishing to work as a consultant on their new jazz trumpet book. The publisher has selected 7 trumpet solos to be included in this new book. As a consultant, your job is as follows:
-
-* The solos must be organized by level of difficulty, such that the easiest solo will appear first in the book.
-* Fingerings must be added to each solo.
-* Reference information must be retrieved from each solo
-
-[Back to table of contents](#table-of-contents)
-
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
 ---
