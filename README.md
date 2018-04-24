@@ -1227,6 +1227,63 @@ in Proceedings of the 13th Sound and Music Computing Conference, 2016.
 [Back to table of contents](#table-of-contents)
 
 ### <a name="codingday2018"></a>3.5. Coding Day -- Spring 2018
+
+Congratulations! BigShot Music Publisher just hired you as a consultant to work on their new book, a collection of jazz trumpet solo transcriptions. The seven solos to be included in the book have already been encoded as kern files and can be downloaded [here.](https://github.com/hleveillegauvin/KernScores) In addition to adding fingerings to every solo in the book, the editor wants you to help them organize the solos according to performance difficulty (i.e. from easiest to hardest). In addition, you must find the most common licks used in the book, and transposed them in C (major or minor). Finally, you must create a table to help the editor create the table of content. 
+
+In order to estimate the difficulty of a solo, will make use of a program written by David Huron and Jonathan Berec in the early 1990s and used [in this paper.](https://musiccog.ohio-state.edu/home/data/_uploaded/pdf/idiomaticism.pdf) Here's a quote from the program's documentation:
+
+```
+# This program accepts Humdrum format scores as input and measures
+# the degree of performance difficulty using a model for B-flat trumpet
+# performance.  A set of values is outputted that indicate the degree of
+# performance difficulty.  Specifically, the program outputs the degree
+# of difficulty for (1) range, (2) dynamics, (3) fingering, (4) tonguing,
+# (5) emboucher difficulty, (6) breathing, and (7) pitch interval transitions.
+# #
+# This program accepts 4-spine input where each input record (line)
+# represents a single note or rest.  Spine 1 of the input specifies
+# the pitch, spine 2 specifies the duration, spine 3 specifies
+# the dynamic level, and spine 4 specifies the articulation.  Pitches are
+# indicated by specifying the semitone distance with respect to middle C
+# (middle c = 0).  For example, the B-flat below middle is represented by
+# the value -2.  Input values do not represent concert pitch; rather, the
+# input is deemed to represent scores for a B-flat instrument.  Hence, the
+# concert pitch A4 should be specified as B4 in the input.
+# #
+# Durations are indicated in seconds.  The first two spine are
+# compatible with outputs from the Humdrum "semits" and "dur" commands.
+# #
+# The third spine (dynamic level) can take one of eight values: ppp, pp, p,
+# mp, mf, f, ff, fff, dim, cres, <, > or |.
+# #
+# The fourth spine (articulation) can take one of the following characters:
+# (, ), or ; -- meaning slur-start, slur-end, and pause, respectively.
+# #
+# Rests are indicated through the presence of a lower-case letter "r" in
+# the first spine.
+# #
+# The following sample input record represents a single note:
+# #
+# #	0	1.273	mf	.
+# #
+# meaning:
+# #	The pitch middle 'c' for a duration of 1.273 seconds,
+# #	at a mezzo-forte dynamic level.
+# #
+# Null tokens (".") are permitted in any of the input fields, e.g.
+# #
+# #	r	0.5	.	.
+# #
+# means:
+# #	The occurrence of a rest with a duration of 0.5 seconds
+# #	with the same dynamic level of the previous non-null dynamic
+# #	specification.
+```
+
+To summarize, for each solo in the book, you will need to create a 6-spine kern file following the syntax below:
+
+    kern(transposed from concert to written)	fingerings	semits	dur	dynamic	articulation
+
 ---
 
 ## <a name="references"></a>4. References
