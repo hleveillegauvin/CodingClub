@@ -1226,7 +1226,7 @@ in Proceedings of the 13th Sound and Music Computing Conference, 2016.
 
 [Back to table of contents](#table-of-contents)
 
-### <a name="codingday2018"></a>3.5. Coding Day -- Spring 2018
+### <a name="codingdayS2018"></a>3.5. Coding Day -- Spring 2018
 
 Congratulations! BigShot Music Publisher just hired you as a consultant to work on their new book, a collection of jazz trumpet solo transcriptions. The seven solos to be included in the book have already been encoded as kern files and can be downloaded [here.](https://github.com/hleveillegauvin/KernScores) In addition to adding fingerings to every solo in the book ([you can use this function I wrote to help you do that](https://github.com/hleveillegauvin/HumdrumUtilities)), the editor wants you to help them organize the solos according to performance difficulty (i.e. from easiest to hardest). In addition, you must find the most common licks used in the book, and transposed them in C (major or minor). Finally, you must create a table to help the editor create the table of content. 
 
