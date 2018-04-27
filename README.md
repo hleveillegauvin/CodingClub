@@ -1290,7 +1290,7 @@ Here's our game plan:
 1. Add tempo
 2. Transpose from concert to written
 3. Write fingering script
-4. Create semit spine
+4. Create semits spine
 5. Create duration spine
 6. Create null dynamic and articulation spines (since we don't have dynamic nor articulation)
 7. Assemble everything into one file
@@ -1301,7 +1301,7 @@ Here's our game plan:
 
 #### 1. Add tempo
 
-Find tempo manually and update kern files
+Find tempo manually and update kern files by adding `*MM<tempo>`.
 
 #### 2. Transpose from concert to written
 
@@ -1316,11 +1316,11 @@ done
 
 #### 3. Write fingering script
 
-Once you downloaded the humdrumutils.sh script, you can source it using the following command (adjust the path accordingly):
+Once you've downloaded the `humdrumutils.sh` script, you can source it using the following command (adjust the path accordingly):
 
     source ~/humdrum-tools/humdrum-utils/humdrumutils.sh
     
-Now you can use the trumpetfing function:
+Now you can use the `trumpetfing` function:
 
 ```
 for i in *.trans
@@ -1329,7 +1329,7 @@ trumpetfing "$i" > "$i".finger
 done
 ```
 
-#### 4. Create semit spine
+#### 4. Create semits spine
 
 ```
 for i in *.trans
@@ -1365,7 +1365,7 @@ assemble "$i" "$i.trans.finger" "$i.trans.semits" "$i.trans.dur" "$i.trans.dyn" 
 done
 ```
 
-Once we created our assembled files, we should run the `humdrum` command to make sure they conform to the humdrum syntax:
+Once we've created our assembled files, we should run the `humdrum` command to make sure they conform to the humdrum syntax:
 
     humdrum *.assemble
     
@@ -1373,9 +1373,9 @@ Once we created our assembled files, we should run the `humdrum` command to make
 
 We can start by creating an alias to run the trumpet program:
 
-    alias trumpet='awk -f ~/humdrum-tools/other-tools/trumpet'
+    alias trumpet='awk -f ~/humdrum-tools/other-tools/trumpet'  # Adjust the path if needed.
 
-We want to create a CSV file that has <name-of-file>\t<Overall performance difficulty>
+We want to create a tab-separated file that has <name-of-file>\t<Overall performance difficulty>
 
 ```
 for i in *.assemble
@@ -1391,7 +1391,7 @@ awk -F'\t' '{ print $2, $1 }' trumpet_perf_difficulty.txt | sort
 
 #### 9. Find licks
 
-Find licks based on melodic intervals:
+Find licks based on melodic intervals. We'll create a while loop and search for licks of 2-10 notes:
 ```
 COUNTER=2
 while [  $COUNTER -lt 11 ]; do
@@ -1402,7 +1402,7 @@ let COUNTER=$COUNTER+1
 done
 ```
 
-Find licks based on trumpet fingerings
+Find licks based on trumpet fingerings. We'll create a while loop and search for licks of 2-10 notes:
 ```
 COUNTER=2
 while [  $COUNTER -lt 11 ]; do
@@ -1415,6 +1415,7 @@ done
 
 #### 10. Create table of content
 
+We'll fetch the name of the trumpet player, the title of the song, and the difficulty of the piece.
 
 ```
 for i in *.krn
@@ -1425,15 +1426,6 @@ perf_difficulty=$(trumpet "$i.assemble.temp" | grep "^Overall" | awk -F'\t' '{ p
 echo -e "$player\t$title\t$perf_difficulty" >> table_of_content.txt
 done
 ```
-
-
-
-
-
-
-
-
-
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
