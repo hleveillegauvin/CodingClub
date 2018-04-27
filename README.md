@@ -1283,8 +1283,40 @@ In order to estimate the difficulty of a solo, will make use of a program writte
 To summarize, for each solo in the book, you will need to create a 6-spine kern file following the syntax below:
 
     kern(transposed from concert to written)	fingerings	semits	dur	dynamic	articulation
+    
+Here's our game plan:
 
----
+------------------------------------------
+1. Add tempo
+2. Transpose from concert to written
+3. Write fingering script
+4. Create semit spine
+5. Create duration spine
+6. Create null spine
+7. Assemble everything into one file
+8. Find difficulty using trumpet program
+9. Find licks
+10. Create table of content
+------------------------------------------
+
+#### 1. Add tempo
+
+Find tempo manually and update kern files
+
+#### 2. Transpose from concert to written
+
+The following command will create new, transposed files for each kern file in our current directory. The new files will be saved as `.trans` files. The `-d 1 -c 2` flags indicate that we transpose up by 1 diatonic step/2 chromatic steps.
+
+```
+for i in *.krn
+do
+trans -d 1 -c 2 "$i" > "$i".trans
+done
+```
+
+#### 3. Write fingering script
+
+
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
