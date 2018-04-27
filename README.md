@@ -1310,11 +1310,43 @@ The following command will create new, transposed files for each kern file in ou
 ```
 for i in *.krn
 do
-trans -d 1 -c 2 "$i" > "$i".trans
+sed 's/q.*/./g' "$i" | trans -d 1 -c 2 > "$i".trans   # dur cannot do gracenotes (i.e. q in humdrum). Replace lines that start with q with null token.
 done
 ```
 
 #### 3. Write fingering script
+
+Once you downloaded the humdrumutils.sh script, you can source it using the following command (adjust the path accordingly):
+
+    source ~/humdrum-tools/humdrum-utils/humdrumutils.sh
+    
+Now you can use the trumpetfing function:
+
+```
+for i in *.trans
+do
+trumpetfing "$i" > "$i".finger
+done
+```
+
+#### 4. Create semit spine
+
+```
+for i in *.trans
+do
+semits -x "$i" > "$i".semits
+done
+```
+
+### 5. Create duration spine
+
+```
+for i in *.trans
+do
+dur -x "$i" > "$i".dur
+done
+```
+
 
 
 
