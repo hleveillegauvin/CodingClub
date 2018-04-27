@@ -1351,7 +1351,7 @@ done
 ```
 for i in *.trans
 do
-sed 's/\*\*kern/\*\*dynam/g' "$i" | humsed '/^[^=]/ s/.*/./g' > "$i".dynam # Convert every token to null (but don't run on lines that start with barline)
+sed 's/\*\*kern/\*\*dyn/g' "$i" | humsed '/^[^=]/ s/.*/./g' > "$i".dyn # Convert every token to null (but don't run on lines that start with barline)
 sed 's/\*\*kern/\*\*artic/g' "$i" | humsed '/^[^=]/ s/.*/./g'  > "$i".artic
 done
 ```
@@ -1361,9 +1361,79 @@ done
 ```
 for i in *.krn
 do
-assemble "$i" "$i.trans.finger" "$i.trans.semits" "$i.trans.dur" "$i.trans.dynam" "$i.trans.artic" > "$i.assemble"
+assemble "$i" "$i.trans.finger" "$i.trans.semits" "$i.trans.dur" "$i.trans.dyn" "$i.trans.artic" > "$i.assemble"
 done
 ```
+
+Once we created our assembled files, we should run the `humdrum` command to make sure they conform to the humdrum syntax:
+
+    humdrum *.assemble
+    
+#### 8. Find difficulty using trumpet program
+
+We can start by creating an alias to run the trumpet program:
+
+    alias trumpet='awk -f ~/humdrum-tools/other-tools/trumpet'
+
+We want to create a CSV file that has <name-of-file>\t<Overall performance difficulty>
+
+```
+for i in *.assemble
+do
+extract -f 3-6 "$i" > "$i.temp"
+name_file=$(echo "$i" | sed 's/.krn.assemble//g')
+perf_difficulty=$(trumpet "$i.temp" | grep "^Overall" | awk -F'\t' '{ print $2 }')
+echo -e "$name_file\t$perf_difficulty" >> trumpet_perf_difficulty.txt
+done
+
+awk -F'\t' '{ print $2, $1 }' trumpet_perf_difficulty.txt | sort
+```
+
+#### 9. Find licks
+
+Find licks based on melodic intervals:
+```
+COUNTER=2
+while [  $COUNTER -lt 11 ]; do
+	echo ""
+	echo "$COUNTER-note lick:"
+	cat *.trans | kern -x  | mint | rid -GLId | grep -v "^=" | context -n "$COUNTER" | sortcount | head -n 10
+let COUNTER=$COUNTER+1 
+done
+```
+
+Find licks based on trumpet fingerings
+```
+COUNTER=2
+while [  $COUNTER -lt 11 ]; do
+	echo ""
+	echo "$COUNTER-note lick:"
+	cat *.finger | kern -x  | mint | rid -GLId | grep -v "^=" | context -n "$COUNTER" | sortcount | head -n 10
+let COUNTER=$COUNTER+1 
+done
+```
+
+#### 10. Create table of content
+
+
+```
+for i in *.krn
+do
+player=$(grep '!!!MPN:' "$i" | sed 's/!!!MPN: //g')
+title=$(grep '!!!OTL:' "$i" | sed 's/!!!OTL: //g')
+perf_difficulty=$(trumpet "$i.assemble.temp" | grep "^Overall" | awk -F'\t' '{ print $2 }')
+echo -e "$player\t$title\t$perf_difficulty" >> table_of_content.txt
+done
+```
+
+
+
+
+
+
+
+
+
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
