@@ -1292,7 +1292,7 @@ Here's our game plan:
 3. Write fingering script
 4. Create semit spine
 5. Create duration spine
-6. Create null spine
+6. Create null dynamic and articulation spines (since we don't have dynamic nor articulation)
 7. Assemble everything into one file
 8. Find difficulty using trumpet program
 9. Find licks
@@ -1338,7 +1338,7 @@ semits -x "$i" > "$i".semits
 done
 ```
 
-### 5. Create duration spine
+#### 5. Create duration spine
 
 ```
 for i in *.trans
@@ -1346,16 +1346,24 @@ do
 dur -x "$i" > "$i".dur
 done
 ```
-### 6. Create null spine
+#### 6. Create null dynamic and articulation spines
 
 ```
 for i in *.trans
 do
-humsed '/^[^=]/ s/.*/./g' "$i" > "$i".null # Convert every token to null (but don't run on lines that start with barline)
+sed 's/\*\*kern/\*\*dynam/g' "$i" | humsed '/^[^=]/ s/.*/./g' > "$i".dynam # Convert every token to null (but don't run on lines that start with barline)
+sed 's/\*\*kern/\*\*artic/g' "$i" | humsed '/^[^=]/ s/.*/./g'  > "$i".artic
 done
 ```
 
+#### 7. Assemble everything into one file
 
+```
+for i in *.krn
+do
+assemble "$i" "$i.trans.finger" "$i.trans.semits" "$i.trans.dur" "$i.trans.dynam" "$i.trans.artic" > "$i.assemble"
+done
+```
 
 ## <a name="references"></a>4. References
 ### <a name="online-resources"></a>4.1. Online Resources
