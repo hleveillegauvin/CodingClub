@@ -1346,7 +1346,14 @@ do
 dur -x "$i" > "$i".dur
 done
 ```
+### 6. Create null spine
 
+```
+for i in *.trans
+do
+humsed '/^[^=]/ s/.*/./g' "$i" > "$i".null # Convert every token to null (but don't run on lines that start with barline)
+done
+```
 
 
 
